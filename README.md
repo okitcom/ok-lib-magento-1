@@ -23,13 +23,6 @@ This is the OK Lib plugin for Magento 1.x. This module provides OK Cash and OK O
 * Include JS
 * Include images
 
-## TODO's
-* Display of discount on frontend, printing (pdf)
-* Clear quote after succesful purchase
-* Buy now button
-* Show init error messages in javascript
-* Buy now error messages in javascript
-
 ## Button locations
 * OK Open
     * In menu bar
@@ -44,7 +37,3 @@ This is the OK Lib plugin for Magento 1.x. This module provides OK Cash and OK O
 
 OK can also be initiated using a text link instead of a button
     
-
-## Lessons (Mage 2)
-* Add discount to existing discount on item
-

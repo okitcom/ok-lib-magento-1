@@ -132,6 +132,15 @@
                 </args>
             </okitcom>
         </routers>
+        <translate>
+            <modules>
+                <Okitcom_OkLibMagento>
+                    <files>
+                        <default>Okitcom_OkLibMagento.csv</default>
+                    </files>
+                </Okitcom_OkLibMagento>
+            </modules>
+        </translate>
     </frontend>
 
     <crontab>
