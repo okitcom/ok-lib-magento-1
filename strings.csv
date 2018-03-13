@@ -1,0 +1,22 @@
+
+
+"Your OK transaction was not found.","Your OK transaction was not found."
+
+"An unknown error occurred","An unknown error occurred"
+"Your OK transaction has not been completed. Please use your OK app to scan the QR code.","Your OK transaction has not been completed. Please use your OK app to scan the QR code."
+"Your OK transaction has not been completed. Please use your OK app to complete the transaction.","Your OK transaction has not been completed. Please use your OK app to complete the transaction."
+"Your issuer was not able to fulfill the transaction. Please try again.","Your issuer was not able to fulfill the transaction. Please try again."
+"Your OK transaction is still processing.","Your OK transaction is still processing."
+"Your OK transaction has been declined.","Your OK transaction has been declined."
+"Your OK transaction has been cancelled by the merchant.","Your OK transaction has been cancelled by the merchant."
+
+"An error occurred while creating your order.","An error occurred while creating your order."
+
+
+"Your OK login could not be processed.","Your OK login could not be processed."
+"Your OK login has expired. Please try again.","Your OK login has expired. Please try again."
+"Your OK login has been declined.","Your OK login has been declined."
+
+"Succesfully logged in with OK.","Succesfully logged in with OK."
+
+"Your transaction exceeds the maximum amount that is supported by OK.","Your transaction exceeds the maximum amount that is supported by OK."

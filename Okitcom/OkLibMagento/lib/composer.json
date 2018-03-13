@@ -1,0 +1,15 @@
+{
+  "name": "okitcom/ok-lib-magento-1.x",
+  "description": "OK Lib for Magento 1.x",
+  "require": {
+    "okitcom/ok-lib-php": "dev-master"
+  },
+  "version": "1.0.0",
+  "license": [
+    "Apache-2.0"
+  ],
+  "type": "magento1-module",
+  "autoload": {
+  },
+  "minimum-stability": "dev"
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+    <adminhtml_sales_order_view>
+        <reference name="order_totals">
+            <block type="oklibmagento/checkout_discount" name="oklibmagento.adminhtml.order_totals.discount" />
+        </reference>
+    </adminhtml_sales_order_view>
+
+    <adminhtml_sales_order_invoice_new>
+        <reference name="invoice_totals">
+            <block type="oklibmagento/checkout_discount" name="oklibmagento.adminhtml_sales_order_invoice_new.order_totals.discount" />
+        </reference>
+    </adminhtml_sales_order_invoice_new>
+
+    <adminhtml_sales_order_invoice_updateqty>
+        <reference name="invoice_totals">
+            <block type="oklibmagento/checkout_discount" name="oklibmagento.adminhtml_sales_order_invoice_updateqty.order_totals.discount" />
+        </reference>
+    </adminhtml_sales_order_invoice_updateqty>
+
+    <adminhtml_sales_order_invoice_view>
+        <reference name="invoice_totals">
+            <block type="oklibmagento/checkout_discount" name="oklibmagento.adminhtml_sales_order_invoice_view.order_totals.discount" />
+        </reference>
+    </adminhtml_sales_order_invoice_view>
+
+    <adminhtml_sales_order_creditmemo_new>
+        <reference name="creditmemo_totals">
+            <block type="oklibmagento/checkout_discount" name="oklibmagento.adminhtml_sales_order_creditmemo_new.order_totals.discount" />
+        </reference>
+    </adminhtml_sales_order_creditmemo_new>
+
+    <adminhtml_sales_order_creditmemo_updateqty>
+        <reference name="creditmemo_totals">
+            <block type="oklibmagento/checkout_discount" name="oklibmagento.adminhtml_sales_order_creditmemo_updateqty.order_totals.discount" />
+        </reference>
+    </adminhtml_sales_order_creditmemo_updateqty>
+
+    <adminhtml_sales_order_creditmemo_view>
+        <reference name="creditmemo_totals">
+            <block type="oklibmagento/checkout_discount" name="oklibmagento.adminhtml_sales_order_creditmemo_view.order_totals.discount" />
+        </reference>
+    </adminhtml_sales_order_creditmemo_view>
+
+</layout>

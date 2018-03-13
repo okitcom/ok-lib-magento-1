@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/oklib.css</stylesheet>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/oklib.js</name>
+            </action>
+            <block type="core/text" name="oklib.js">
+                <action method="setText">
+                    <text>
+                        <!--                       <![CDATA[<script type="text/javascript" src="https://okit.com/js/oklib/dist/oklib.js"></script>]]>-->
+                        <![CDATA[<script type="text/javascript" src="https://beta.okit.io/js/oklib/dist/oklib.js"></script>]]>
+                    </text>
+                </action>
+            </block>
+        </reference>
+    </default>
+    <checkout_cart_index>
+        <reference name="checkout.cart.top_methods">
+            <block type="oklibmagento/checkout_button" name="checkout.cart.top_methods.oklib" template="oklibmagento/checkout/checkout.phtml">
+            </block>
+        </reference>
+    </checkout_cart_index>
+    <catalog_product_view>
+        <reference name="product.info.addtocart">
+            <block type="oklibmagento/checkout_button" name="checkout.cart.top_methods.oklib"  template="oklibmagento/checkout/buynow.phtml" />
+        </reference>
+    </catalog_product_view>
+    <customer_account_login>
+        <reference name="content">
+            <block type="oklibmagento/authorization_button" name="oklib.login.authorization.button" template="oklibmagento/authorization/button.phtml">
+            </block>
+        </reference>
+    </customer_account_login>
+    <sales_order_view>
+        <reference name="order_totals">
+            <block type="oklibmagento/checkout_discount" name="oklibmagento.order_totals.discount" />
+        </reference>
+    </sales_order_view>
+
+</layout>

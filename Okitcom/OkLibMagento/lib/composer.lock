@@ -1,0 +1,67 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "31ce9f4033ecb645ce27555656afe96a",
+    "packages": [
+        {
+            "name": "okitcom/ok-lib-php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/okitcom/ok-lib-php.git",
+                "reference": "d1ccaea38f0a8de3b25380d8d0ccd9bcc1440228"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/okitcom/ok-lib-php/zipball/d1ccaea38f0a8de3b25380d8d0ccd9bcc1440228",
+                "reference": "d1ccaea38f0a8de3b25380d8d0ccd9bcc1440228",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.7.x-dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OK\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Hidde Lycklama",
+                    "email": "hidde@okit.com"
+                }
+            ],
+            "description": "PHP client for the OK LIB API",
+            "homepage": "https://okit.com/",
+            "keywords": [
+                "OK",
+                "ok api",
+                "ok cash",
+                "ok open",
+                "ok ticket",
+                "okit",
+                "oklib",
+                "php"
+            ],
+            "time": "2018-03-08 17:09:15"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "okitcom/ok-lib-php": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
