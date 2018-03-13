@@ -13,7 +13,7 @@ use OK\Service\Open;
  * Date: 3/5/18
  */
 
-class Okitcom_OkLibMagento_Helper_OkLib extends Mage_Core_Helper_Abstract
+class Okitcom_OkLibMagento_Helper_Oklib extends Mage_Core_Helper_Abstract
 {
 
     /**
