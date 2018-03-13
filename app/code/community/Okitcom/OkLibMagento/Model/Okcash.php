@@ -70,13 +70,14 @@ class Okitcom_OkLibMagento_Model_Okcash extends Mage_Payment_Model_Method_Abstra
     }
 
     /**
-     * Void payment
+     * Get config payment action url
+     * Used to universalize payment actions when processing payment place
      *
-     * @param Mage_Sales_Model_Order_Payment $payment
-     * @return Mage_Paypal_Model_Express
+     * @return string
      */
-    public function void(Varien_Object $payment)
+    public function getConfigPaymentAction()
     {
+        return Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE;
     }
 
     /**
@@ -104,19 +105,6 @@ class Okitcom_OkLibMagento_Model_Okcash extends Mage_Payment_Model_Method_Abstra
     }
 
     /**
-     * Cancel payment
-     *
-     * @param Mage_Sales_Model_Order_Payment $payment
-     * @return Mage_Paypal_Model_Express
-     */
-    public function cancel(Varien_Object $payment)
-    {
-//        $this->void($payment);
-
-        return $this;
-    }
-
-    /**
      * Process payment
      *
      * @param Mage_Sales_Model_Order_Payment $payment
@@ -126,9 +114,9 @@ class Okitcom_OkLibMagento_Model_Okcash extends Mage_Payment_Model_Method_Abstra
     private function processOkPayment(Varien_Object $payment, $amount) {
         // this is basically a formality
         $order = $payment->getOrder();
-        $checkout = Mage::getModel('oklibmagento/checkout')->load($order->getId(), "sales_order_id");
+        $checkout = Mage::getModel('oklibmagento/checkout')->load($order->getQuoteId(), "quote_id");
         if ($checkout->getState() !== Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_SUCCESS) {
-            Mage::throwException($this->__("OK transaction state is invalid."));
+            Mage::throwException($this->__("OK transaction state is invalid: " . $checkout->getState()));
         }
 
         // Match amounts

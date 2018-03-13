@@ -109,7 +109,7 @@
             <okcash>
                 <active>1</active>
                 <model>oklibmagento/okcash</model>
-                <order_status>pending</order_status>
+                <order_status>processing</order_status>
                 <title>OK</title>
                 <allowspecific>0</allowspecific>
                 <payment_action>sale</payment_action>
