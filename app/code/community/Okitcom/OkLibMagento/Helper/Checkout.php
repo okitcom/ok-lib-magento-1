@@ -38,7 +38,7 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
         $shippingPrice = $shippingMethod["price"];
         $shippingMethodName = $shippingMethod["label"];
 
-        $totalAmount = $quote->getBaseSubtotalWithDiscount() + $shippingPrice;
+        $totalAmount = $quote->getGrandTotal();
         if ($totalAmount == 0) {
             Mage::throwException($this->__("Total amount is zero."));
         }
@@ -157,7 +157,9 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
         try {
             $response = $okCash->request($transactionBuilder->build());
         } catch (\OK\Model\Network\Exception\NetworkException $exception) {
-            Mage::logException($exception);
+            Mage::logException(
+                new Exception("",
+                    0, $exception));
             return [
                 "error" => Mage::helper('core')->__("Your transaction exceeds the maximum amount that is supported by OK.")
             ];
