@@ -2,6 +2,8 @@
 #--------------------------#
 # Magento Default Files    #
 #--------------------------#
+.gitignore
+README.md
 
 /app/etc/local.xml
 
