@@ -141,7 +141,23 @@
                 </Okitcom_OkLibMagento>
             </modules>
         </translate>
+        <layout>
+            <updates>
+                <oklibmagento>
+                    <file>oklibmagento.xml</file>
+                </oklibmagento>
+            </updates>
+        </layout>
     </frontend>
+    <adminhtml>
+        <layout>
+            <updates>
+                <oklibmagento>
+                    <file>oklibmagento.xml</file>
+                </oklibmagento>
+            </updates>
+        </layout>
+    </adminhtml>
 
     <crontab>
         <jobs>
