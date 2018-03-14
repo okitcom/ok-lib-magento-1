@@ -40,6 +40,8 @@ class Okitcom_OkLibMagento_Model_Okcash extends Mage_Payment_Model_Method_Abstra
      */
     protected $_canCancelInvoice        = false;
 
+    protected $_infoBlockType = 'oklibmagento/adminhtml_works';
+
     /**
      * Check method for processing with base currency
      *

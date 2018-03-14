@@ -74,7 +74,7 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
                     ->setLabel("Email")
                     ->setType(Attribute::TYPE_EMAIL)
                     ->setRequired(true)
-                    //->setVerified(true)
+                    ->setVerified(true)
                     ->build()
             )
             ->addAttribute(
