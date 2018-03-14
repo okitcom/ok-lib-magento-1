@@ -12,8 +12,7 @@
             <block type="core/text" name="oklib.js">
                 <action method="setText">
                     <text>
-                        <!--                       <![CDATA[<script type="text/javascript" src="https://okit.com/js/oklib/dist/oklib.js"></script>]]>-->
-                        <![CDATA[<script type="text/javascript" src="https://beta.okit.io/js/oklib/dist/oklib.js"></script>]]>
+                        <![CDATA[<script type="text/javascript" src="https://okit.com/js/oklib/dist/oklib.js"></script>]]>
                     </text>
                 </action>
             </block>

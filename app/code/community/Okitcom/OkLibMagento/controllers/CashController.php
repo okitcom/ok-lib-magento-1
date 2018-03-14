@@ -21,11 +21,11 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
     }
 
     public function buynowAction() {
-        $quoteObj = Mage::getModel('sales/quote');
-        $quoteObj->setStoreId(Mage::app()->getStore()->getId());
+        $quote = Mage::getModel('sales/quote');
+        $quote->setStoreId(Mage::app()->getStore()->getId());
 
-        $cart   = Mage::getSingleton('checkout/cart');
-        $cart->setQuote($quoteObj);
+//        $cart   = Mage::getSingleton('checkout/cart');
+//        $cart->setQuote($quoteObj);
         $params = $this->getRequest()->getParams();
         try {
             if (isset($params['qty'])) {
@@ -75,14 +75,19 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
                 $params['qty'] = $requestedQty;
             }
 
-            $cart->addProduct($product, $params);
+            $request = new Varien_Object($params);
+
+            $quote->addProduct($product, $request);
             if (!empty($related)) {
-                $cart->addProductsByIds(explode(',', $related));
+                $this->addProductsByIds($quote, explode(',', $related));
             }
 
-            $cart->save();
+            $quote->getBillingAddress();
+            $quote->getShippingAddress()->setCollectShippingRates(true);
+            $quote->collectTotals();
+            $quote->save();
 
-            $response = Mage::helper('oklibmagento/checkout')->requestCash($cart->getQuote());
+            $response = Mage::helper('oklibmagento/checkout')->requestCash($quote);
 
             $this->getResponse()->setHeader(
                 'Content-type',
@@ -262,6 +267,63 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
                 "error" => $message
             ])
         );
+    }
+
+    /**
+     * Adding products to cart by ids
+     *
+     * @param   array $productIds
+     */
+    public function addProductsByIds($quote, $productIds)
+    {
+        $allAvailable = true;
+        $allAdded     = true;
+
+        if (!empty($productIds)) {
+            foreach ($productIds as $productId) {
+                $productId = (int) $productId;
+                if (!$productId) {
+                    continue;
+                }
+                $product = $this->_getProduct($productId);
+                if ($product->getId() && $product->isVisibleInCatalog()) {
+                    try {
+                        $quote->addProduct($product);
+                    } catch (Exception $e){
+                        $allAdded = false;
+                    }
+                } else {
+                    $allAvailable = false;
+                }
+            }
+        }
+    }
+
+    /**
+     * Get product object based on requested product information
+     *
+     * @param   mixed $productInfo
+     * @return  Mage_Catalog_Model_Product
+     */
+    protected function _getProduct($productInfo)
+    {
+        $product = null;
+        if ($productInfo instanceof Mage_Catalog_Model_Product) {
+            $product = $productInfo;
+        } elseif (is_int($productInfo) || is_string($productInfo)) {
+            $product = Mage::getModel('catalog/product')
+                ->setStoreId(Mage::app()->getStore()->getId())
+                ->load($productInfo);
+        }
+        $currentWebsiteId = Mage::app()->getStore()->getWebsiteId();
+        if (!$product
+            || !$product->getId()
+            || !is_array($product->getWebsiteIds())
+            || !in_array($currentWebsiteId, $product->getWebsiteIds())
+        ) {
+            Mage::throwException(Mage::helper('checkout')->__('The product could not be found.'));
+        }
+        return $product;
     }
 
 }

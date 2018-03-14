@@ -14,10 +14,6 @@ class Okitcom_OkLibMagento_Model_Config_Source_Environment {
                 "label" => 'Production'
             ],
             [
-                "value" => 'dev',
-                "label" => 'Development'
-            ],
-            [
                 "value" => 'beta',
                 "label" => 'Beta'
             ],
