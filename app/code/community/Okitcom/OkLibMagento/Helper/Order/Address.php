@@ -14,6 +14,19 @@ class Okitcom_OkLibMagento_Helper_Order_Address extends Okitcom_OkLibMagento_Hel
     function process(Mage_Sales_Model_Quote $quote, Transaction $transaction) {
         $this->mapOkAddress($quote->getShippingAddress(), $transaction);
         $this->mapOkAddress($quote->getBillingAddress(), $transaction);
+
+        $customer = $quote->getCustomer();
+        $address = $quote->getShippingAddress()->exportCustomerAddress();
+        if (!$this->customerHasAddress($customer, $address)) {
+
+            if ($customer->getPrimaryBillingAddress() == null) {
+                $address->setIsPrimaryBilling(true);
+            }
+            if ($customer->getPrimaryShippingAddress() == null) {
+                $address->setIsPrimaryShipping(true);
+            }
+            $customer->addAddress($address);
+        }
     }
 
     private function mapOkAddress($address, Transaction $transaction) {
@@ -28,7 +41,29 @@ class Okitcom_OkLibMagento_Helper_Order_Address extends Okitcom_OkLibMagento_Hel
         $address->setPostcode($okAddress->addressComponent(Attribute::ADDRESS_ZIP));
         $address->setCity($okAddress->addressComponent(Attribute::ADDRESS_CITY));
         $address->setCountryId("NL"); // TODO: Change
-        $address->setTelephone("31620789955");
+        $address->setTelephone($transaction->attributes->phone->value);
         return $address;
+    }
+
+    private function customerHasAddress($customer, $address) {
+        foreach ($customer->getAddresses() as $customerAddress) {
+            if ($this->serializeAddress($address) == $this->serializeAddress($customerAddress)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function serializeAddress($address)  {
+        return serialize(
+            array(
+                'firstname' => $address->getFirstname(),
+                'lastname'  => $address->getLastname(),
+                'street'    => $address->getStreet(),
+                'city'      => $address->getCity(),
+                'postcode'  => $address->getPostcode(),
+                'country_id'=> $address->getCountryId(),
+            )
+        );
     }
 }
