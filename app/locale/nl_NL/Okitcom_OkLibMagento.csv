@@ -1,0 +1,26 @@
+
+
+"Your OK transaction was not found.","Je OK transactie kon niet worden opgehaald."
+
+"An unknown error occurred","Er is een onbekende fout opgetreden. Probeer het later opnieuw."
+"Your OK transaction has not been completed. Please use your OK app to scan the QR code.","Je OK transactie is niet gelukt. Gebruik je OK app om de QR code te scannen."
+"Your OK transaction has not been completed. Please use your OK app to complete the transaction.","Je OK transactie is niet gelukt. Gebruik je OK app om de transactie te voltooien."
+"Your issuer was not able to fulfill the transaction. Please try again.","Je bank heeft de transactie niet goedgekeurd. Probeer het opnieuw."
+"Your OK transaction is still processing.","Je OK transactie moet nog worden verwerkt."
+"Your OK transaction has been declined.","Je OK transactie is afgewezen."
+"Your OK transaction has been cancelled by the merchant.","Je OK transactie is geannuleerd door de verkoper."
+
+"An error occurred while creating your order.","Er is een fout opgetreden bij het maken van je bestelling."
+
+
+"Your OK login could not be processed.","Je OK login kan niet worden verwerkt."
+"Your OK login has expired. Please try again.","Je OK login is verlopen. Probeer het opnieuw."
+"Your OK login has been declined.","Je OK login is afgewezen."
+
+"Succesfully logged in with OK.","Succesvol ingelogd met OK."
+
+"Your transaction exceeds the maximum amount that is supported by OK.","Je transactie is groter dan het maximale bedrag dat je kan betalen met OK."
+
+"Quick checkout","Bestel met"
+"Buy now","Koop nu met"
+"Log in","Log in met"
