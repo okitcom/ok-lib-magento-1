@@ -10,6 +10,7 @@ class Okitcom_OkLibMagento_Model_Order_Creditmemo_Total_Discount extends Mage_Sa
         $order = $creditmemo->getOrder();
         $checkout = Mage::getModel('oklibmagento/checkout')->load($order->getId(), 'sales_order_id');
 
+        $okDiscountAmount = 0;
         if ($checkout != null && $checkout->getId() != null && $checkout->getDiscount() != null) {
 
             $okDiscountAmount = $checkout->getDiscount() / 100.0;

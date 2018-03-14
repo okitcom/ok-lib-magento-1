@@ -16,6 +16,8 @@ class Okitcom_OkLibMagento_Block_Checkout_Button extends Mage_Core_Block_Templat
      */
     protected $_paymentMethodCode = Okitcom_OkLibMagento_Helper_Config::PAYMENT_METHOD_CODE;
 
+    protected $_isInCatalog = false;
+
     /**
      * @return Mage_Core_Block_Abstract
      */
@@ -23,9 +25,27 @@ class Okitcom_OkLibMagento_Block_Checkout_Button extends Mage_Core_Block_Templat
     {
         $result = parent::_beforeToHtml();
 
-        $isInCatalog = $this->getIsInCatalogProduct();
-        $quote = ($isInCatalog || '' == $this->getIsQuoteAllowed())
+        $quote = ($this->_isInCatalog)
             ? null : Mage::getSingleton('checkout/session')->getQuote();
+        $maximumTransactionAmount = Mage::helper('oklibmagento/config')->getOkCashValue("transaction_amount_max") / 100.0;
+        if ($this->_isInCatalog) {
+            /** @var Mage_Catalog_Model_Product $currentProduct */
+            $currentProduct = Mage::registry('current_product');
+            if (!is_null($currentProduct)) {
+                $price = (float)$currentProduct->getFinalPrice();
+                $typeInstance = $currentProduct->getTypeInstance();
+                if (empty($price) && !$currentProduct->isSuper() && !$typeInstance->canConfigure($currentProduct)) {
+                    $this->_shouldRender = false;
+                    return $result;
+                }
+                if ($price > $maximumTransactionAmount) {
+                    $this->_shouldRender = false;
+                    return $result;
+                }
+            }
+
+            return $result;
+        }
 
         // validate minimum quote amount and validate quote for zero grandtotal
         if (null !== $quote && (!$quote->validateMinimumAmount()
@@ -33,11 +53,14 @@ class Okitcom_OkLibMagento_Block_Checkout_Button extends Mage_Core_Block_Templat
             $this->_shouldRender = false;
             return $result;
         }
-
         // check payment method availability
-        $methodInstance = Mage::helper('payment')->getMethodInstance($this->_paymentMethodCode);
-        if (!$methodInstance || !$methodInstance->isAvailable($quote)) {
+//        $methodInstance = Mage::helper('payment')->getMethodInstance($this->_paymentMethodCode);
+//        if (!$methodInstance || !$methodInstance->isAvailable($quote)) {
 //            $this->_shouldRender = false;
+//            return $result;
+//        }
+        if (null !== $quote && $quote->getGrandTotal() > $maximumTransactionAmount) {
+            $this->_shouldRender = false;
             return $result;
         }
 
@@ -51,9 +74,9 @@ class Okitcom_OkLibMagento_Block_Checkout_Button extends Mage_Core_Block_Templat
      */
     protected function _toHtml()
     {
-//        if (!$this->_shouldRender) {
-//            return '';
-//        }
+        if (!$this->_shouldRender) {
+            return '';
+        }
         return parent::_toHtml();
     }
 }

@@ -119,6 +119,9 @@
             <general>
                 <environment>secure</environment>
             </general>
+            <okcash>
+                <transaction_amount_max>25000</transaction_amount_max>
+            </okcash>
         </okcheckout>
     </default>
 

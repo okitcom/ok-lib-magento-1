@@ -10,6 +10,7 @@ class Okitcom_OkLibMagento_Model_Order_Invoice_Total_Discount extends Mage_Sales
         $order = $invoice->getOrder();
         $checkout = Mage::getModel('oklibmagento/checkout')->load($order->getId(), 'sales_order_id');
 
+        $okDiscountAmount = 0;
         if ($checkout != null && $checkout->getId() != null && $checkout->getDiscount() != null) {
 
             $okDiscountAmount = $checkout->getDiscount() / 100.0;

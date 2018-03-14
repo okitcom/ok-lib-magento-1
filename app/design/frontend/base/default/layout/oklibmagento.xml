@@ -26,7 +26,7 @@
     </checkout_cart_index>
     <catalog_product_view>
         <reference name="product.info.addtocart">
-            <block type="oklibmagento/checkout_button" name="checkout.cart.top_methods.oklib"  template="oklibmagento/checkout/buynow.phtml" />
+            <block type="oklibmagento/checkout_buynow" name="checkout.cart.top_methods.oklib"  template="oklibmagento/checkout/buynow.phtml" />
         </reference>
     </catalog_product_view>
     <customer_account_login>
