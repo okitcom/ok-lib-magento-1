@@ -23,7 +23,12 @@ class Okitcom_OkLibMagento_Block_Authorization_Button extends Mage_Core_Block_Te
     {
         $result = parent::_beforeToHtml();
 
-        $this->_shouldRender = Mage::helper('oklibmagento/config')->getOkOpenValue("secret") != null;
+        $open = Okitcom_OkLibMagento_Helper_Oklib::SERVICE_TYPE_OPEN;
+        $serviceEnabled = Mage::helper('oklibmagento/oklib')->isServiceEnabled($open) && Mage::helper('oklibmagento/oklib')->getSecretKey($open) != null;
+        if (!$serviceEnabled) {
+            $this->_shouldRender = false;
+            return $this;
+        }
 
         return $result;
     }
@@ -35,9 +40,9 @@ class Okitcom_OkLibMagento_Block_Authorization_Button extends Mage_Core_Block_Te
      */
     protected function _toHtml()
     {
-//        if (!$this->_shouldRender) {
-//            return '';
-//        }
+        if (!$this->_shouldRender) {
+            return '';
+        }
         return parent::_toHtml();
     }
 }

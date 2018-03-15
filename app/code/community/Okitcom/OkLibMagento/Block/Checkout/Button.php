@@ -19,7 +19,7 @@ class Okitcom_OkLibMagento_Block_Checkout_Button extends Mage_Core_Block_Templat
     protected $_isInCatalog = false;
 
     /**
-     * @return Mage_Core_Block_Abstract
+     * @return Okitcom_OkLibMagento_Block_Checkout_Button
      */
     protected function _beforeToHtml()
     {
@@ -27,6 +27,14 @@ class Okitcom_OkLibMagento_Block_Checkout_Button extends Mage_Core_Block_Templat
 
         $quote = ($this->_isInCatalog)
             ? null : Mage::getSingleton('checkout/session')->getQuote();
+
+        $cash = Okitcom_OkLibMagento_Helper_Oklib::SERVICE_TYPE_CASH;
+        $serviceEnabled = Mage::helper('oklibmagento/oklib')->isServiceEnabled($cash) && Mage::helper('oklibmagento/oklib')->getSecretKey($cash) != null;
+        if (!$serviceEnabled) {
+            $this->_shouldRender = false;
+            return $this;
+        }
+
         if ($this->_isInCatalog) {
             /** @var Mage_Catalog_Model_Product $currentProduct */
             $currentProduct = Mage::registry('current_product');

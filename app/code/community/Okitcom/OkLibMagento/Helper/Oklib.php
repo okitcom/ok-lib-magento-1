@@ -16,6 +16,9 @@ use OK\Service\Open;
 class Okitcom_OkLibMagento_Helper_Oklib extends Mage_Core_Helper_Abstract
 {
 
+    const SERVICE_TYPE_CASH = "cash";
+    const SERVICE_TYPE_OPEN = "open";
+
     /**
      * Get a OK Cash client.
      * @return Cash
@@ -23,7 +26,7 @@ class Okitcom_OkLibMagento_Helper_Oklib extends Mage_Core_Helper_Abstract
     public function getCashClient() {
         Okitcom_OkLibMagento_Model_Observer::init();
 
-        $cashSecret = Mage::helper('oklibmagento/config')->getOkCashValue("okcashsecret");
+        $cashSecret = $this->getSecretKey(self::SERVICE_TYPE_CASH);
         return new Cash(
             new CashCredentials("", $cashSecret, $this->getEnvironment())
         );
@@ -32,7 +35,7 @@ class Okitcom_OkLibMagento_Helper_Oklib extends Mage_Core_Helper_Abstract
     public function getOpenClient() {
         Okitcom_OkLibMagento_Model_Observer::init();
 
-        $openSecret = Mage::helper('oklibmagento/config')->getOkOpenValue("okopensecret");
+        $openSecret = $this->getSecretKey(self::SERVICE_TYPE_OPEN);
         return new Open(
             new OpenCredentials("", $openSecret, $this->getEnvironment())
         );
@@ -52,6 +55,45 @@ class Okitcom_OkLibMagento_Helper_Oklib extends Mage_Core_Helper_Abstract
                 return new BetaEnvironment();
         }
         return null;
+    }
+
+    /**
+     * Whether our service is enabled
+     * @param $type string service
+     * @return bool
+     */
+    public function isServiceEnabled($type) {
+        $configHelper = Mage::helper('oklibmagento/config');
+        switch ($type) {
+            case self::SERVICE_TYPE_OPEN:
+                return boolval($configHelper->getOkOpenValue("enabled"));
+                break;
+            case self::SERVICE_TYPE_CASH:
+                return boolval($configHelper->getOkCashValue("enabled"));
+                break;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * @param $type string service type, open or cash.
+     * @return null|string secret key, if any
+     */
+    public function getSecretKey($type) {
+        $configHelper = Mage::helper('oklibmagento/config');
+        $env = $configHelper->getOkGeneralValue("environment");
+        $suffix = $env;
+        switch ($type) {
+            case self::SERVICE_TYPE_OPEN:
+                return $configHelper->getOkOpenValue("okopensecret_" . $suffix);
+                break;
+            case self::SERVICE_TYPE_CASH:
+                return $configHelper->getOkCashValue("okcashsecret_" . $suffix);
+                break;
+            default:
+                return null;
+        }
     }
 
 }
