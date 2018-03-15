@@ -27,7 +27,6 @@ class Okitcom_OkLibMagento_Block_Checkout_Button extends Mage_Core_Block_Templat
 
         $quote = ($this->_isInCatalog)
             ? null : Mage::getSingleton('checkout/session')->getQuote();
-        $maximumTransactionAmount = Mage::helper('oklibmagento/config')->getOkCashValue("transaction_amount_max") / 100.0;
         if ($this->_isInCatalog) {
             /** @var Mage_Catalog_Model_Product $currentProduct */
             $currentProduct = Mage::registry('current_product');
@@ -38,10 +37,10 @@ class Okitcom_OkLibMagento_Block_Checkout_Button extends Mage_Core_Block_Templat
                     $this->_shouldRender = false;
                     return $result;
                 }
-                if ($price > $maximumTransactionAmount) {
-                    $this->_shouldRender = false;
-                    return $result;
-                }
+//                if ($price > $maximumTransactionAmount) {
+//                    $this->_shouldRender = false;
+//                    return $result;
+//                }
             }
 
             return $result;
@@ -59,10 +58,10 @@ class Okitcom_OkLibMagento_Block_Checkout_Button extends Mage_Core_Block_Templat
 //            $this->_shouldRender = false;
 //            return $result;
 //        }
-        if (null !== $quote && $quote->getGrandTotal() > $maximumTransactionAmount) {
-            $this->_shouldRender = false;
-            return $result;
-        }
+//        if (null !== $quote && $quote->getGrandTotal() > $maximumTransactionAmount) {
+//            $this->_shouldRender = false;
+//            return $result;
+//        }
 
         return $result;
     }
