@@ -10,9 +10,7 @@ class Okitcom_OkLibMagento_OpenController extends Mage_Core_Controller_Front_Act
         Okitcom_OkLibMagento_Model_Observer::init();
 
         if (!Mage::helper('oklibmagento/oklib')->isServiceEnabled(Okitcom_OkLibMagento_Helper_Oklib::SERVICE_TYPE_OPEN)) {
-            return [
-                "error" => Mage::helper('core')->__("Could not initiate OK Open: Service is not enabled.")
-            ];
+            return $this->jsonError(Mage::helper('core')->__("Could not initiate OK Open: Service is not enabled."));
         }
 
         $externalIdentifier = Mage::helper('core')->getRandomString(32);
@@ -63,9 +61,7 @@ class Okitcom_OkLibMagento_OpenController extends Mage_Core_Controller_Front_Act
             $response = $okOpenClient->request($authorisationRequest);
         } catch (\OK\Model\Network\Exception\NetworkException $exception) {
             Mage::logException($exception);
-            return [
-                "error" => Mage::helper('core')->__("Could not initiate OK Open.")
-            ];
+            return $this->jsonError(Mage::helper('core')->__("Could not initiate OK Open."));
         }
 
         $authorization->setGuid($response->guid);
@@ -183,6 +179,19 @@ class Okitcom_OkLibMagento_OpenController extends Mage_Core_Controller_Front_Act
                 break;
         }
         return $this->__($key);
+    }
+
+    protected function jsonError($message) {
+        $this->getResponse()->setHeader(
+            'Content-type',
+            'application/json'
+        );
+
+        $this->getResponse()->setBody(
+            Mage::helper('core')->jsonEncode([
+                "error" => $message
+            ])
+        );
     }
 
 

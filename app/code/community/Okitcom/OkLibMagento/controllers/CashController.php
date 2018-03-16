@@ -4,9 +4,7 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
 
     public function initAction() {
         if (!Mage::helper('oklibmagento/oklib')->isServiceEnabled(Okitcom_OkLibMagento_Helper_Oklib::SERVICE_TYPE_CASH)) {
-            return [
-                "error" => Mage::helper('core')->__("Could not initiate OK Cash: Service is not enabled.")
-            ];
+            return $this->jsonError(Mage::helper('core')->__("Could not initiate OK Cash: Service is not enabled."));
         }
 
         $response = Mage::helper('oklibmagento/checkout')->requestCash();
