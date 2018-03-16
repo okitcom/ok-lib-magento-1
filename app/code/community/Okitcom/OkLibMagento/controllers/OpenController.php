@@ -9,6 +9,12 @@ class Okitcom_OkLibMagento_OpenController extends Mage_Core_Controller_Front_Act
     public function initAction() {
         Okitcom_OkLibMagento_Model_Observer::init();
 
+        if (!Mage::helper('oklibmagento/oklib')->isServiceEnabled(Okitcom_OkLibMagento_Helper_Oklib::SERVICE_TYPE_OPEN)) {
+            return [
+                "error" => Mage::helper('core')->__("Could not initiate OK Open: Service is not enabled.")
+            ];
+        }
+
         $externalIdentifier = Mage::helper('core')->getRandomString(32);
 
         $authorization = Mage::getModel('oklibmagento/authorization');
