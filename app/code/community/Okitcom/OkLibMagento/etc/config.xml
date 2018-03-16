@@ -162,7 +162,7 @@
     <crontab>
         <jobs>
             <oklibmagento_checkout_status>
-                <schedule><cron_expr>14 * * * *</cron_expr></schedule>
+                <schedule><cron_expr>* * * * *</cron_expr></schedule>
                 <run><model>oklibmagento/observer::updateStatus</model></run>
             </oklibmagento_checkout_status>
         </jobs>

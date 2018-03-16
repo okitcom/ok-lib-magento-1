@@ -43,6 +43,19 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
             Mage::throwException($this->__("Total amount is zero."));
         }
 
+        /** @var \OK\Service\Cash $okCash */
+        $okCash = Mage::helper('oklibmagento/oklib')->getCashClient();
+
+//        $existing = $this->loadByQuoteId($quote->getId());
+//        if ($existing->getId() != null) {
+//            // We already have one
+//            try {
+//                $okCash->cancel($existing->getGuid());
+//            } catch (\Exception $e) {
+//                die("Could not cancel");
+//            }
+//        }
+
         $externalIdentifier = Mage::helper('core')->getRandomString(32);
 
         $checkout = Mage::getModel('oklibmagento/checkout');
@@ -153,7 +166,6 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
 //        var_dump($transactionBuilder->build());
 //        die();
 
-        $okCash = Mage::helper('oklibmagento/oklib')->getCashClient();
         try {
             $response = $okCash->request($transactionBuilder->build());
         } catch (\OK\Model\Network\Exception\NetworkException $exception) {

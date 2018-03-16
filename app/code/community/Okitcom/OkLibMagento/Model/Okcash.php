@@ -152,7 +152,7 @@ class Okitcom_OkLibMagento_Model_Okcash extends Mage_Payment_Model_Method_Abstra
      */
     private function processOkRefund(Varien_Object $payment, $amount) {
         $order = $payment->getOrder();
-        $checkout = Mage::getModel('oklibmagento/checkout')->load($order->getQuoteId(), "quote_id");
+        $checkout = Mage::getModel('oklibmagento/checkout')->load($order->getId(), "sales_order_id");
         /** @var \OK\Service\Cash $service */
         $service = Mage::helper('oklibmagento/oklib')->getCashClient();
         try {

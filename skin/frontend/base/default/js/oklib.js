@@ -60,12 +60,19 @@ function showMessage(txt, type) {
     $element.append(window.jQuery(messageHtml));
 }
 
+var loadingOkRequest = false;
+
 $(document).on('click', '#ok-checkout-button', function () {
+    if (loadingOkRequest) {
+        e.preventDefault();
+        return;
+    }
     const type = 'cash';
     if (!oklibpresenter.showExisting(type)) {
 
         var button = window.jQuery("#ok-checkout-button");
         button.addClass("ok-button-progress");
+        loadingOkRequest = true;
         window.jQuery.ajax({
             showLoader: true,
             url: '/oklib/cash/init',
@@ -73,6 +80,7 @@ $(document).on('click', '#ok-checkout-button', function () {
             type: "GET",
             dataType: 'json'
         }).done(function (data) {
+            loadingOkRequest = false;
             button.removeClass("ok-button-progress");
             if (data.error) {
                 showMessage(data.error, "error");
@@ -80,6 +88,7 @@ $(document).on('click', '#ok-checkout-button', function () {
                 oklibpresenter.showNew(type, data);
             }
         }).error(function(req, data) {
+            loadingOkRequest = false;
             button.removeClass("ok-button-progress");
             showMessage("Your transaction amount exceeds the maximum that is supported by OK.", "error");
         });
@@ -89,6 +98,10 @@ $(document).on('click', '#ok-checkout-button', function () {
 var lastSelectedOptions = null;
 
 $(document).on('click', '#ok-buynow-button', function (e) {
+    if (loadingOkRequest) {
+        e.preventDefault();
+        return;
+    }
     const okLibType = 'cash';
     const addtocart_form_selector = 'product_addtocart_form';
 
@@ -111,6 +124,7 @@ $(document).on('click', '#ok-buynow-button', function (e) {
 
         var button = window.jQuery("#ok-buynow-button");
         button.addClass("ok-button-progress");
+        loadingOkRequest = true;
         window.jQuery.ajax({
             showLoader: true,
             url: '/oklib/cash/buynow',
@@ -118,6 +132,7 @@ $(document).on('click', '#ok-buynow-button', function (e) {
             type: "GET",
             dataType: 'json'
         }).done(function (data) {
+            loadingOkRequest = false;
             button.removeClass("ok-button-progress");
             if (data.error) {
                 showMessage(data.error, "error");
@@ -125,6 +140,7 @@ $(document).on('click', '#ok-buynow-button', function (e) {
                 oklibpresenter.showNew(okLibType, data);
             }
         }).error(function(req, data) {
+            loadingOkRequest = false;
             button.removeClass("ok-button-progress");
             showMessage("An unknown error occurred.", "error");
         });
@@ -134,11 +150,15 @@ $(document).on('click', '#ok-buynow-button', function (e) {
 });
 
 $(document).on('click', '#ok-open-button', function () {
+    if (loadingOkRequest) {
+        return;
+    }
     const type = 'open';
     if (!oklibpresenter.showExisting(type)) {
 
         var button = window.jQuery("#ok-open-button");
         button.addClass("ok-button-progress");
+        loadingOkRequest = true;
         window.jQuery.ajax({
             showLoader: true,
             url: '/oklib/open/init',
@@ -146,6 +166,7 @@ $(document).on('click', '#ok-open-button', function () {
             type: "GET",
             dataType: 'json'
         }).done(function (data) {
+            loadingOkRequest = false;
             button.removeClass("ok-button-progress");
             if (data.error) {
                 showMessage(data.error, "error");
@@ -153,6 +174,7 @@ $(document).on('click', '#ok-open-button', function () {
                 oklibpresenter.showNew(type, data);
             }
         }).error(function(req, data) {
+            loadingOkRequest = false;
             button.removeClass("ok-button-progress");
             showMessage("An unknown error occurred.", "error");
         });

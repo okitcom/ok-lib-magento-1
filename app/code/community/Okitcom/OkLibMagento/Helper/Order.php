@@ -32,6 +32,10 @@ class Okitcom_OkLibMagento_Helper_Order extends Mage_Core_Helper_Abstract
 
         $quote->collectTotals()->save();
 
+//        $checkout = Mage::getModel('oklibmagento/checkout')->load($transaction->id, "ok_transaction_id");
+//        $checkout->sales_order_id = $quote->reserveOrderId()->getReservedOrderId();
+//        $checkout->save();
+
         $service = Mage::getModel('sales/service_quote', $quote);
         $service->submitAll();
 
