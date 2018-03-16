@@ -29,7 +29,7 @@ class Okitcom_OkLibMagento_Model_Observer
             /** @var \OK\Service\Cash $okCash */
             $okCash = Mage::helper('oklibmagento/oklib')->getCashClient();
             $transactions = Mage::helper('oklibmagento/checkout')->loadAllPending();
-//            Mage::log("Found " . $transactions->count() . " tx to update");
+            $this->log("Found " . $transactions->count() . " tx to update");
             $updated = 0;
             $completed = 0;
             $still_pending = 0;
