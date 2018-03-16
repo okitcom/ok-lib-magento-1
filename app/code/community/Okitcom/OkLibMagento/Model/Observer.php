@@ -54,7 +54,7 @@ class Okitcom_OkLibMagento_Model_Observer
                         $still_pending++;
                     }
                 } catch (\Exception $e) {
-                    $this->log("Could not update OK transaction with id " . $item->getId());
+                    $this->log("Could not update OK transaction with id " . $item->getId() . ". Message: " . $e->getMessage());
                 }
 
                 // Mark NewPendingTrigger transactions as closed (if older than X time)

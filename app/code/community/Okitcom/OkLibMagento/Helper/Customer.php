@@ -26,7 +26,7 @@ class Okitcom_OkLibMagento_Helper_Customer extends Mage_Core_Helper_Abstract
             ->loadByEmail($email);
     }
 
-    public function findOrCreate($token, $email, $firstName, $lastName) {
+    public function findOrCreate($token, $email, $firstName, $lastName, $websiteId, $storeId) {
         $customerByToken = $this->findByToken($token);
         if ($customerByToken->getId()) {
             return $customerByToken;
@@ -40,10 +40,10 @@ class Okitcom_OkLibMagento_Helper_Customer extends Mage_Core_Helper_Abstract
         return $this->create($token, $firstName, $lastName, $email);
     }
 
-    public function create($token, $firstName, $lastName, $email) {
+    public function create($token, $firstName, $lastName, $email, $websiteId, $storeId) {
         $customer = Mage::getModel('customer/customer');
-        $customer->setWebsiteId(Mage::app()->getStore()->getWebsiteId())
-            ->setStore(Mage::app()->getStore())
+        $customer->setWebsiteId($websiteId)
+            ->setStoreId($storeId)
             ->setFirstname($firstName)
             ->setLastname($lastName)
             ->setEmail($email)

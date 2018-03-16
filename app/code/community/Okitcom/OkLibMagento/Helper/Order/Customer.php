@@ -31,8 +31,9 @@ class Okitcom_OkLibMagento_Helper_Order_Customer extends Okitcom_OkLibMagento_He
             return;
         }
 
+        $store = $quote->getStore();
         $nameParts = explode(";", $transaction->attributes->get("name")->value);
-        $customer = $customerHelper->create($transaction->token, $nameParts[0], $nameParts[1], $transaction->attributes->get("email")->value);
+        $customer = $customerHelper->create($transaction->token, $nameParts[0], $nameParts[1], $transaction->attributes->get("email")->value, $store->getWebsiteId(), $store->getId());
 
         if ($customer->getId() == null) {
             throw new Okitcom_OkLibMagento_Helper_Checkout_Exception("Could not create a valid customer.");

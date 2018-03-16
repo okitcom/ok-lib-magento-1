@@ -134,11 +134,14 @@ class Okitcom_OkLibMagento_OpenController extends Mage_Core_Controller_Front_Act
         $customerHelper = Mage::helper('oklibmagento/customer');
         $nameParts = explode(";", $okResponse->attributes->get("name")->value);
 
+        $store = Mage::app()->getStore();
         $customer = $customerHelper->findOrCreate(
             $okResponse->token,
             $okResponse->attributes->get("email"),
             $nameParts[0],
-            $nameParts[1]
+            $nameParts[1],
+            $store->getWebsiteId(),
+            $store->getId()
         );
 
         $customerSession = Mage::getSingleton('customer/session');
