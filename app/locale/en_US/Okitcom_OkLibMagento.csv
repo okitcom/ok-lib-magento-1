@@ -8,6 +8,7 @@
 "Your issuer was not able to fulfill the transaction. Please try again.","Your issuer was not able to fulfill the transaction. Please try again."
 "Your OK transaction is still processing.","Your OK transaction is still processing."
 "Your OK transaction has been declined.","Your OK transaction has been declined."
+"You have declined the OK transaction in your app.","You have declined the OK transaction in your app."
 "Your OK transaction has been cancelled by the merchant.","Your OK transaction has been cancelled by the merchant."
 
 "An error occurred while creating your order.","An error occurred while creating your order."
@@ -16,6 +17,7 @@
 "Your OK login could not be processed.","Your OK login could not be processed."
 "Your OK login has expired. Please try again.","Your OK login has expired. Please try again."
 "Your OK login has been declined.","Your OK login has been declined."
+"You have declined the OK login in your app.","You have declined the OK login in your app."
 
 "Succesfully logged in with OK.","Succesfully logged in with OK."
 
@@ -23,4 +25,4 @@
 
 "Quick checkout with","Quick checkout with"
 "Buy now with","Buy now with"
-"Log in with","Log in with"
+"Log in","Log in with"

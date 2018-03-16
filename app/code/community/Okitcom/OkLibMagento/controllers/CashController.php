@@ -212,11 +212,13 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
             case "ErrorUnableToApprove":
                 $key = "Your issuer was not able to fulfill the transaction. Please try again.";
                 break;
+            case "DeclinedByUserPendingVoid":
             case "AuthorisedPendingCapture":
                 $key = "Your OK transaction is still processing.";
                 break;
-            case "DeclinedByUserPendingVoid":
             case "ClosedAndVoided":
+                $key = "You have declined the OK transaction in your app.";
+                break;
             case "ErrorAndVoided":
                 $key = "Your OK transaction has been declined.";
                 break;

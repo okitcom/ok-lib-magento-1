@@ -126,7 +126,7 @@ class Okitcom_OkLibMagento_OpenController extends Mage_Core_Controller_Front_Act
             );
         }
         if ($okResponse->authorisationResult->result != Okitcom_OkLibMagento_Helper_Config::STATE_AUTHORIZATION_SUCCESS_OK) {
-            return $this->redirectWithError($this->__("Your OK login has been declined."));
+            return $this->redirectWithError($this->__("You have declined the OK login in your app."));
         }
 
         $customerHelper = Mage::helper('oklibmagento/customer');
@@ -163,7 +163,7 @@ class Okitcom_OkLibMagento_OpenController extends Mage_Core_Controller_Front_Act
         $key = "An unknown error occurred.";
         switch ($state) {
             case "NewPendingApproval":
-                $key = "Your  OK transaction has not been completed. Please use your OK app to scan the QR code.";
+                $key = "Your OK transaction has not been completed. Please use your OK app to scan the QR code.";
                 break;
             case "NewPendingTrigger":
                 $key = "Your OK transaction has not been completed. Please use your OK app to complete the transaction.";
