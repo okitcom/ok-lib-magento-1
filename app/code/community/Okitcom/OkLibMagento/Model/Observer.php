@@ -24,7 +24,7 @@ class Okitcom_OkLibMagento_Model_Observer
     }
 
     public function updateStatus() {
-            Mage::log('Running OK transaction status check');
+            $this->log('Running OK transaction status check');
 
             /** @var \OK\Service\Cash $okCash */
             $okCash = Mage::helper('oklibmagento/oklib')->getCashClient();
@@ -54,7 +54,7 @@ class Okitcom_OkLibMagento_Model_Observer
                         $still_pending++;
                     }
                 } catch (\Exception $e) {
-                    Mage::log("Could not update OK transaction with id " . $item->getId());
+                    $this->log("Could not update OK transaction with id " . $item->getId());
                 }
 
                 // Mark NewPendingTrigger transactions as closed (if older than X time)
@@ -62,7 +62,7 @@ class Okitcom_OkLibMagento_Model_Observer
             }
 
             if ($updated > 0) {
-                Mage::log("Ran update on " . $transactions->count() . " transactions. (" . $updated . " updated, " . $completed . " completed, " . $still_pending . " still pending)");
+                $this->log("Ran update on " . $transactions->count() . " transactions. (" . $updated . " updated, " . $completed . " completed, " . $still_pending . " still pending)");
             }
     }
 
@@ -84,6 +84,10 @@ class Okitcom_OkLibMagento_Model_Observer
             $checkout->setSalesOrderId($order->getId());
             $checkout->save();
         }
+    }
+
+    private function log($message) {
+        Mage::log($message, null, Okitcom_OkLibMagento_Helper_Config::LOGFILE);
     }
 
 }

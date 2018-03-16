@@ -30,6 +30,8 @@ class Okitcom_OkLibMagento_Helper_Config extends Mage_Core_Helper_Abstract
     const STATE_AUTHORIZATION_SUCCESS = "Processed";
     const STATE_AUTHORIZATION_SUCCESS_OK = "OK";
 
+    const LOGFILE = "oklib.log";
+
     public function getOkGeneralValue($key) {
         return $this->getValue(self::OK_SECTION, self::OK_GROUP_GENERAL, $key);
     }
