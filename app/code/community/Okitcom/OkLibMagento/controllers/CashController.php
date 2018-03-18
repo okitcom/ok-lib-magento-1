@@ -171,7 +171,11 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
 
     private function redirectWithError($message) {
         Mage::getSingleton('core/session')->addError($message);
-        return $this->_redirect("checkout/onepage/failure");
+        $failureUrl = Mage::helper('oklibmagento/checkout')->getFailureUrl();
+        if (substr($failureUrl, 0, 4) === "http") {
+            return $this->_redirectUrl($failureUrl);
+        }
+        return $this->_redirect($failureUrl);
     }
 
     private function redirectWithSuccess($order) {
@@ -194,7 +198,8 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
 //            ->setStoreId(Mage::app()->getStore()->getId());
 //        Mage::getSingleton('checkout/cart')->setQuote($freshQuote);
 
-        return $this->_redirect("checkout/onepage/success");
+        $successUrl = Mage::helper('oklibmagento/checkout')->getSuccessUrl();
+        return $this->_redirect($successUrl);
     }
 
     /**

@@ -28,10 +28,17 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
         Okitcom_OkLibMagento_Model_Observer::init();
 
         if ($quote == null) {
-            $quote = Mage::getModel('checkout/cart')->getQuote();
-        }
-        if ($quote == null) {
-            Mage::throwException($this->__("Cart is empty."));
+            $referenceQuote = Mage::getModel('checkout/cart')->getQuote();
+            if ($referenceQuote == null) {
+                Mage::throwException($this->__("Cart is empty."));
+            }
+
+            $quote = Mage::getModel('sales/quote');
+            $quote->setStoreId(Mage::app()->getStore()->getId());
+
+            $quote->merge($referenceQuote)
+                ->collectTotals()
+                ->save();
         }
 
         $shippingMethod = $this->calculateShippingPrice($quote);
@@ -45,16 +52,6 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
 
         /** @var \OK\Service\Cash $okCash */
         $okCash = Mage::helper('oklibmagento/oklib')->getCashClient();
-
-//        $existing = $this->loadByQuoteId($quote->getId());
-//        if ($existing->getId() != null) {
-//            // We already have one
-//            try {
-//                $okCash->cancel($existing->getGuid());
-//            } catch (\Exception $e) {
-//                die("Could not cancel");
-//            }
-//        }
 
         $externalIdentifier = Mage::helper('core')->getRandomString(32);
 
@@ -255,6 +252,15 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
                 "from" => $fromDate
             ])
             ->load();
+    }
+
+    public function getFailureUrl() {
+        $url = Mage::helper('core/http')->getHttpReferer() ? Mage::helper('core/http')->getHttpReferer()  : 'checkout/onepage/failure';
+        return $url;
+    }
+
+    public function getSuccessUrl() {
+        return "checkout/onepage/success";
     }
 
 }
