@@ -50,6 +50,7 @@
 						<okcashsecret_beta translate="label">
 							<label>Beta OK Cash API key</label>
 							<frontend_type>text</frontend_type>
+							<backend_model>Okitcom_OkLibMagento_Model_Config_Backend_Apikey</backend_model>
 							<sort_order>10</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -59,6 +60,7 @@
 						<okcashsecret_secure translate="label">
 							<label>Live OK Cash API key</label>
 							<frontend_type>text</frontend_type>
+							<backend_model>Okitcom_OkLibMagento_Model_Config_Backend_Apikey</backend_model>
 							<sort_order>20</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -99,6 +101,7 @@
 						<okopensecret_beta translate="label">
 							<label>Beta OK Open API key</label>
 							<frontend_type>text</frontend_type>
+							<backend_model>Okitcom_OkLibMagento_Model_Config_Backend_Apikey</backend_model>
 							<sort_order>0</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
@@ -108,6 +111,7 @@
 						<okopensecret_secure translate="label">
 							<label>Live OK Open API key</label>
 							<frontend_type>text</frontend_type>
+							<backend_model>Okitcom_OkLibMagento_Model_Config_Backend_Apikey</backend_model>
 							<sort_order>1</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
