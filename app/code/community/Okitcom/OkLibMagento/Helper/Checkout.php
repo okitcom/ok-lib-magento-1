@@ -106,18 +106,21 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
             );
 
         foreach ($quote->getAllItems() as $item) {
-//            print $item->getQty() . " " . $item->getName() . " " . $item->getPrice() . " - " . $item->getDiscountAmount() . " Calc: " . Amount::fromEuro($item->getPrice() - ($item->getDiscountAmount() / $item->getQty()))->getEuro() . " VAT: ". $item->getRowTotalInclTax() . "<br />";
-            $itemPrice = $item->getRowTotalInclTax();
-            $tax = $itemPrice - $item->getRowTotal();
-            if ($tax == null) {
-                $tax = 0;
-            }
+//            print $item->getQty() . " " . $item->getName() . " " . $item->getPrice() . " - " . $item->getDiscountAmount() . " Calc: " . Amount::fromEuro($item->getPrice() - ($item->getDiscountAmount() / $item->getQty()))->getEuro() . " incl. VAT: ". $item->getRowTotalInclTax() . " incl. row total " . $item->getRowTotalWithDiscount() . "<br />";
+//            var_dump($item->debug());
+//            $itemPrice = $item->getRowTotalInclTax();
+//            $tax = $itemPrice - $item->getRowTotal();
+//            if ($tax == null) {
+//                $tax = 0;
+//            }
+            $itemPrice = Amount::fromEuro(($item->getRowTotal() + $item->getTaxAmount()) / $item->getQty());
+            $tax = Amount::fromEuro($item->getTaxPercent());
             $lineItemBuilder = (new LineItemBuilder())
                 ->setQuantity($item->getQty())
                 ->setProductCode($item->getSku())
                 ->setDescription($item->getName())
-                ->setAmount(Amount::fromEuro($itemPrice))
-                ->setVat(Amount::fromEuro($tax)->getCents())
+                ->setAmount($itemPrice)
+                ->setVat($tax->getCents())
                 ->setCurrency("EUR");
             if ($item->getDiscountAmount() > 0) {
                 $lineItemBuilder->addSubItem(
@@ -160,15 +163,16 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
             }
         }
 
-//        var_dump($transactionBuilder->build());
-//        die();
-
         try {
             $response = $okCash->request($transactionBuilder->build());
         } catch (\OK\Model\Network\Exception\NetworkException $exception) {
             Mage::logException(
                 new Exception("",
                     0, $exception));
+
+//            var_dump($transactionBuilder->build());
+//            die();
+
             return [
                 "error" => Mage::helper('core')->__("Your transaction exceeds the maximum amount that is supported by OK.")
             ];
