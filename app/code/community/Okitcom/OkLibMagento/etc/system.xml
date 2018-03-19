@@ -79,6 +79,16 @@
 							<comment>Default shipping method to use in checkout</comment>
 							<depends><enabled>1</enabled></depends>
 						</default_shipping_method>
+						<cancel_after translate="label">
+							<label>Cancel after (minutes)</label>
+							<comment>Automatically cancel a transaction after time. Set 0 to never cancel transactions.</comment>
+							<frontend_type>text</frontend_type>
+							<backend_model>Okitcom_OkLibMagento_Model_Config_Backend_Apikey</backend_model>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</cancel_after>
 					</fields>
 				</okcash>
 				<okopen translate="label">

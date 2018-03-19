@@ -30,6 +30,9 @@ class Okitcom_OkLibMagento_Helper_Config extends Mage_Core_Helper_Abstract
     const STATE_AUTHORIZATION_SUCCESS = "Processed";
     const STATE_AUTHORIZATION_SUCCESS_OK = "OK";
 
+    const STATE_CHECKOUT_CANCELLED = "Cancelled";
+    const STATE_CHECKOUT_UNSCANNED = "NewPendingTrigger";
+
     const LOGFILE = "oklib.log";
 
     public function getOkGeneralValue($key) {

@@ -119,6 +119,9 @@
             <general>
                 <environment>secure</environment>
             </general>
+            <okcash>
+                <cancel_after>180</cancel_after>
+            </okcash>
         </okcheckout>
     </default>
 

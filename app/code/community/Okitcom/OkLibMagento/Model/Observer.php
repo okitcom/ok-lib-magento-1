@@ -32,7 +32,10 @@ class Okitcom_OkLibMagento_Model_Observer
             $this->log("Found " . $transactions->count() . " tx to update");
             $updated = 0;
             $completed = 0;
+            $canceled = 0;
             $still_pending = 0;
+            $cancelAfterMinutes = Mage::helper('oklibmagento/config')->getOkCashValue("cancel_after");
+
             /** @var Okitcom_OkLibMagento_Model_Checkout $item */
             foreach ($transactions->getItems() as $item) {
                 // Get status
@@ -40,29 +43,52 @@ class Okitcom_OkLibMagento_Model_Observer
                 $guid = $item->getGuid();
                 try {
                     $okResponse = $okCash->get($guid);
-                    if ($okResponse != null && $okResponse->state != $item->getState()) {
-                        $item->setState($okResponse->state);
-                        $item->save();
+                    if ($okResponse != null) {
 
-                        if ($okResponse->state == Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_SUCCESS) {
-                            $this->createOrder($item, $okResponse);
-                            $completed++;
+                        if ($okResponse->state != $item->getState()) {
+                            $item->setState($okResponse->state);
+                            $item->save();
+
+                            if ($okResponse->state == Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_SUCCESS) {
+                                $this->createOrder($item, $okResponse);
+                                $completed++;
+                            }
+
+                            $updated++;
                         }
 
-                        $updated++;
                     } else {
                         $still_pending++;
                     }
+
                 } catch (\Exception $e) {
+                    Mage::logException($e);
                     $this->log("Could not update OK transaction with id " . $item->getId() . ". Message: " . $e->getMessage());
+                }
+
+                if (isset($cancelAfterMinutes) && $cancelAfterMinutes != 0 && $item->getState() === Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_UNSCANNED) {
+                    $age = time() - strtotime($item->getCreatedAt());
+                    $this->log("Age " . $age . " " . $item->getId());
+                    if ($age > $cancelAfterMinutes * 60.0) {
+                        try {
+                            $okCash->cancel($guid);
+
+                            $item->setState(Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_CANCELLED);
+                            $item->save();
+
+                            $canceled++;
+                        } catch (\OK\Model\Network\Exception\NetworkException $exception) {
+                            Mage::logException(new Okitcom_OkLibMagento_Helper_Checkout_Exception("Could not cancel OK transaction: " . $item->getId()));
+                        }
+                    }
                 }
 
                 // Mark NewPendingTrigger transactions as closed (if older than X time)
                 //$this->logger->info("Transaction ID " . $item->id . " state " . $item->state);
             }
 
-            if ($updated > 0) {
-                $this->log("Ran update on " . $transactions->count() . " transactions. (" . $updated . " updated, " . $completed . " completed, " . $still_pending . " still pending)");
+            if ($still_pending > 0 || $updated > 0 || $canceled > 0) {
+                $this->log("Ran update on " . $transactions->count() . " transactions. (" . $updated . " updated, " . $completed . " completed, " . $canceled . " canceled, " . $still_pending . " still pending)");
             }
     }
 
@@ -85,7 +111,7 @@ class Okitcom_OkLibMagento_Model_Observer
             $order = Mage::helper('oklibmagento/order')->createOrder($quote, $okResponse);
             if (!isset($order)) {
                 $this->log("Could not create order for checkout: " . $checkout->getId());
-                return;
+                throw new Okitcom_OkLibMagento_Helper_Checkout_Exception("Could not create order for checkout: " . $checkout->getId());
             }
 
             $discountOk = $okResponse->authorisationResult->amount->sub($okResponse->amount);
