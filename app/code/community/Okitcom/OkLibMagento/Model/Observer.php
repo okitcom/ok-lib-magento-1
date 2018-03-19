@@ -55,6 +55,8 @@ class Okitcom_OkLibMagento_Model_Observer
                             }
 
                             $updated++;
+                        } else {
+                            $still_pending++;
                         }
 
                     } else {
@@ -68,7 +70,6 @@ class Okitcom_OkLibMagento_Model_Observer
 
                 if (isset($cancelAfterMinutes) && $cancelAfterMinutes != 0 && $item->getState() === Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_UNSCANNED) {
                     $age = time() - strtotime($item->getCreatedAt());
-                    $this->log("Age " . $age . " " . $item->getId());
                     if ($age > $cancelAfterMinutes * 60.0) {
                         try {
                             $okCash->cancel($guid);

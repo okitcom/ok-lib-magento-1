@@ -22,7 +22,7 @@ class Okitcom_OkLibMagento_Helper_Config extends Mage_Core_Helper_Abstract
     const DEFAULT_LOCALE = "en_GB";
 
     const DATE_DB_FORMAT = 'Y-m-d H:i:s';
-    const DATE_PENDING_OFFSET = ' -1 day'; // One day in the past
+    const DATE_PENDING_OFFSET = ' -3 days'; // One day in the past
 //    const PENDING_STATES = [
 //        "NewPendingTrigger", "NewPendingApproval"
 //    ];
