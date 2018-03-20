@@ -70,12 +70,12 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
             "transaction" => $externalIdentifier
         ]);
 
-        $quote->reserveOrderId();
+//        $quote->reserveOrderId();
 
         $transactionBuilder = (new TransactionBuilder())
             ->setReference($quote->getId())
             ->setRedirectUrl($redirectUrl)
-            ->setPurchaseId($quote->getReservedOrderId())
+//            ->setPurchaseId($quote->getReservedOrderId())
             ->setAmount(Amount::fromEuro($totalAmount))
             ->setPermissions("TriggerPaymentInitiation")
             ->addAttribute(

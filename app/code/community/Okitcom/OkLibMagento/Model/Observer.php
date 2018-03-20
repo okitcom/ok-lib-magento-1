@@ -81,6 +81,7 @@ class Okitcom_OkLibMagento_Model_Observer
                         $item->save();
 
                         $canceled++;
+                        $still_pending--;
                     } catch (\OK\Model\Network\Exception\NetworkException $exception) {
                         Mage::logException(new Okitcom_OkLibMagento_Helper_Checkout_Exception("Could not cancel OK transaction: " . $item->getId()));
                     }
