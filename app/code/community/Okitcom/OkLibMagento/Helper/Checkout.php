@@ -173,6 +173,9 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
 //            var_dump($transactionBuilder->build());
 //            die();
 
+            $checkout->setState(Okitcom_OkLibMagento_Helper_Config::STATE_OK_EXTERNAL_ERROR);
+            $checkout->save();
+
             return [
                 "error" => Mage::helper('core')->__("Your transaction exceeds the maximum amount that is supported by OK.")
             ];

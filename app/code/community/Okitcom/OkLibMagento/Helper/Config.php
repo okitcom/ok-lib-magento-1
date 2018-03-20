@@ -26,6 +26,7 @@ class Okitcom_OkLibMagento_Helper_Config extends Mage_Core_Helper_Abstract
 //    const PENDING_STATES = [
 //        "NewPendingTrigger", "NewPendingApproval"
 //    ];
+    const STATE_OK_EXTERNAL_ERROR = "OkReturnedError";
     const STATE_CHECKOUT_SUCCESS = "ClosedAndCaptured";
     const STATE_AUTHORIZATION_SUCCESS = "Processed";
     const STATE_AUTHORIZATION_SUCCESS_OK = "OK";

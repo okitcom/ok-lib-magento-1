@@ -61,6 +61,10 @@ class Okitcom_OkLibMagento_OpenController extends Mage_Core_Controller_Front_Act
             $response = $okOpenClient->request($authorisationRequest);
         } catch (\OK\Model\Network\Exception\NetworkException $exception) {
             Mage::logException($exception);
+
+            $authorization->setState(Okitcom_OkLibMagento_Helper_Config::STATE_OK_EXTERNAL_ERROR);
+            $authorization->save();
+
             return $this->jsonError(Mage::helper('core')->__("Could not initiate OK Open."));
         }
 
