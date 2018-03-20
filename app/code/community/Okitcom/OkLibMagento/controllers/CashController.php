@@ -192,6 +192,7 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
             ->setIsActive(0)
             ->save();
         Mage::getSingleton('checkout/session')->setQuoteId(null);
+        Mage::getSingleton('checkout/cart')->truncate()->save();
 
 //        $freshQuote = Mage::getModel('sales/quote')
 //            ->assignCustomer($order->getCustomer())
