@@ -39,6 +39,8 @@ class Okitcom_OkLibMagento_Helper_Order extends Mage_Core_Helper_Abstract
         $service = Mage::getModel('sales/service_quote', $quote);
         $service->submitAll();
 
+        $quote->setIsActive(false)->save();
+
         return $service->getOrder();
     }
 
