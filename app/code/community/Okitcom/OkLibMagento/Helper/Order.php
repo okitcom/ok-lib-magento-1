@@ -41,7 +41,11 @@ class Okitcom_OkLibMagento_Helper_Order extends Mage_Core_Helper_Abstract
 
         $quote->setIsActive(false)->save();
 
-        return $service->getOrder();
+        $order = $service->getOrder();
+
+        Mage::dispatchEvent('checkout_submit_all_after', array('order' => $order, 'quote' => $quote));
+
+        return $order;
     }
 
 

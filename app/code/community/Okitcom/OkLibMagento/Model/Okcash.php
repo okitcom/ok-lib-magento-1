@@ -118,7 +118,7 @@ class Okitcom_OkLibMagento_Model_Okcash extends Mage_Payment_Model_Method_Abstra
         $order = $payment->getOrder();
         $checkout = Mage::getModel('oklibmagento/checkout')->load($order->getQuoteId(), "quote_id");
         if ($checkout->getState() !== Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_SUCCESS) {
-            Mage::throwException($this->__("OK transaction state is invalid: " . $checkout->getState()));
+            Mage::throwException(Mage::helper("core")->__("OK transaction state is invalid: " . $checkout->getState()));
         }
 
         // Match amounts
@@ -138,6 +138,13 @@ class Okitcom_OkLibMagento_Model_Okcash extends Mage_Payment_Model_Method_Abstra
             $checkout->getOkTransactionId());
         $payment->setTransactionId($checkout->getOkTransactionId()
         )->setParentTransactionId($checkout->getOkTransactionId());
+
+        // notify customer
+        if (!$order->getEmailSent()) {
+            $order->queueNewOrderEmail()->addStatusHistoryComment(
+                Mage::helper("core")->__('Notified customer about order #%s.', $order->getIncrementId())
+            )->setIsCustomerNotified(true)->save();
+        }
 
         return $this;
     }
