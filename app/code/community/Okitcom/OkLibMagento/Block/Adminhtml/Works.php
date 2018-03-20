@@ -27,7 +27,7 @@ class Okitcom_OkLibMagento_Block_Adminhtml_Works extends Mage_Payment_Block_Info
     {
         $transport = parent::_prepareSpecificInformation($transport);
         $checkout = $this->getOrderOK();
-        if ($checkout == null) {
+        if ($checkout->getId() == null) {
             return $transport;
         }
         $data = array();

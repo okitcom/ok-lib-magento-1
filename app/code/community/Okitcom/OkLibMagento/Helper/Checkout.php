@@ -37,6 +37,7 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
             $quote->setStoreId(Mage::app()->getStore()->getId());
 
             $quote->merge($referenceQuote)
+                ->setTotalCollectedFlag(false)
                 ->collectTotals()
                 ->save();
         }
@@ -44,6 +45,10 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
         $shippingMethod = $this->calculateShippingPrice($quote);
         $shippingPrice = $shippingMethod["price"];
         $shippingMethodName = $shippingMethod["label"];
+
+        $quote->setTotalsCollectedFlag(false)
+            ->collectTotals()
+            ->save();
 
         $totalAmount = $quote->getGrandTotal();
         if ($totalAmount == 0) {
@@ -210,7 +215,9 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
         $shippingPrice = 0;
         $rates = $shippingAddress->getGroupedAllShippingRates();
         if (isset($rates[$carrier])) {
-            $shippingPrice = $rates[$carrier][0]->getPrice();
+            $rate = $rates[$carrier][0];
+            $shippingPrice = $rate->getPrice();
+            $shippingAddress->setShippingMethod($rate->getCarrier() . "_" . $rate->getMethod());
         }
         return [
             "price" =>$shippingPrice,
@@ -259,7 +266,7 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
         return Mage::getModel('oklibmagento/checkout')
             ->getCollection()
             ->addFieldToFilter("state", $pendingStates)
-            ->addFieldToFilter("updated_at", [
+            ->addFieldToFilter("created_at", [
                 "from" => $fromDate
             ])
             ->load();

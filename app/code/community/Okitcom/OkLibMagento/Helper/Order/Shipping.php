@@ -16,5 +16,13 @@ class Okitcom_OkLibMagento_Helper_Order_Shipping extends Okitcom_OkLibMagento_He
         $shippingAddress->setCollectShippingRates(true)
             ->collectShippingRates()
             ->setShippingMethod($shippingMethod);
+
+        $carrier = explode("_", $shippingMethod)[0];
+
+        $rates = $shippingAddress->getGroupedAllShippingRates();
+        if (isset($rates[$carrier])) {
+            $rate = $rates[$carrier][0];
+            $shippingAddress->setShippingMethod($rate->getCarrier() . "_" . $rate->getMethod());
+        }
     }
 }
