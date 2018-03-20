@@ -50,6 +50,11 @@ class Transaction extends JSONObject
     public $reference;
 
     /**
+     * @var string merchant reference
+     */
+    public $purchaseId;
+
+    /**
      * @var string Location of the purchase
      */
     public $location;

@@ -141,7 +141,7 @@ class Okitcom_OkLibMagento_Model_Okcash extends Mage_Payment_Model_Method_Abstra
 
         // notify customer
         if (!$order->getEmailSent()) {
-            $order->queueNewOrderEmail()->addStatusHistoryComment(
+            $order->sendNewOrderEmail()->addStatusHistoryComment(
                 Mage::helper("core")->__('Notified customer about order #%s.', $order->getIncrementId())
             )->setIsCustomerNotified(true)->save();
         }

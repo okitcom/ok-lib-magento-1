@@ -65,9 +65,12 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
             "transaction" => $externalIdentifier
         ]);
 
+        $quote->reserveOrderId();
+
         $transactionBuilder = (new TransactionBuilder())
             ->setReference($quote->getId())
             ->setRedirectUrl($redirectUrl)
+            ->setPurchaseId($quote->getReservedOrderId())
             ->setAmount(Amount::fromEuro($totalAmount))
             ->setPermissions("TriggerPaymentInitiation")
             ->addAttribute(
@@ -198,6 +201,7 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
         $shippingMethod = $this->configHelper->getOkCashValue("default_shipping_method");
         $shippingAddress = $quote->getShippingAddress();
         $shippingAddress->setShippingMethod($shippingMethod)
+            ->setCountryId("NL") // TODO: Create setting
             ->setCollectShippingRates(true)
             ->collectShippingRates();
 

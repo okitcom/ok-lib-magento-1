@@ -34,27 +34,12 @@ class Okitcom_OkLibMagento_Model_Checkout_Quote_Address_Discount extends Mage_Sa
                 $discountOk = $okresponse->authorisationResult->amount->sub($okresponse->amount);
                 $discountAmount = $discountOk->getEuro();
 
-//                $appliedCartDiscount = 0;
-//                if ($address->getDiscountDescription()) {
-//                    // If a discount exists in cart and another discount is applied, the add both discounts.
-//                    $appliedCartDiscount = $address->getDiscountAmount();
-//                    $discountAmount = $address->getDiscountAmount() + $discountAmount;
-//                    $label = $address->getDiscountDescription() . ', ' . $this->label;
-//                }
-//
-//                $address->setDiscountDescription($label);
-//                $address->setDiscountAmount($discountAmount);
-//                $address->setBaseDiscountAmount($discountAmount);
-//                $address->setSubtotalWithDiscount($address->getSubtotal() + $discountAmount);
-//                $address->setBaseSubtotalWithDiscount($address->getBaseSubtotal() + $discountAmount);
+                $address->addTotalAmount($this->getCode(), $discountAmount);
+                $address->addBaseTotalAmount($this->getCode(), $discountAmount);
 
-//                if (isset($appliedCartDiscount)) {
-//                    $address->addTotalAmount($this->getCode(), $discountAmount - $appliedCartDiscount);
-//                    $address->addBaseTotalAmount($this->getCode(), $discountAmount - $appliedCartDiscount);
-//                } else {
-                    $address->addTotalAmount($this->getCode(), $discountAmount);
-                    $address->addBaseTotalAmount($this->getCode(), $discountAmount);
-//                }
+//                TODO: Version statement
+//                $address->setGrandTotal($address->getGrandTotal() + $discountAmount);
+//                $address->setBaseGrandTotal($address->getBaseGrandTotal() + $discountAmount);
 
                 return $this;
             }
