@@ -283,4 +283,37 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
         return "checkout/onepage/success";
     }
 
+    /**
+     * @param Okitcom_OkLibMagento_Model_Checkout $checkout
+     * @param $okResponse
+     * @throws Okitcom_OkLibMagento_Helper_Checkout_Exception
+     */
+    public function createOrder(Okitcom_OkLibMagento_Model_Checkout $checkout, $okResponse) {
+        // process
+        if ($checkout->getSalesOrderId() == null) {
+            // update
+            $quote = Mage::getModel('sales/quote')
+                ->loadByIdWithoutStore($checkout->getQuoteId());
+            if ($quote->getId() == null) {
+                Mage::logException(new Okitcom_OkLibMagento_Helper_Checkout_Exception("Could not find quote on OK transaction object. Checkout: " . $checkout->getId()));
+                throw new Okitcom_OkLibMagento_Helper_Checkout_Exception("Could not find quote.");
+            }
+
+            $order = Mage::helper('oklibmagento/order')->createOrder($quote, $okResponse);
+            if (!isset($order)) {
+                $this->log("Could not create order for checkout: " . $checkout->getId());
+                throw new Okitcom_OkLibMagento_Helper_Checkout_Exception("Could not create order for checkout: " . $checkout->getId());
+            }
+
+            $discountOk = $okResponse->authorisationResult->amount->sub($okResponse->amount);
+            $checkout->setDiscount(-$discountOk->getCents());
+            $checkout->setSalesOrderId($order->getId());
+            $checkout->save();
+        }
+    }
+
+    private function log($message) {
+        Mage::log($message, null, Okitcom_OkLibMagento_Helper_Config::LOGFILE);
+    }
+
 }

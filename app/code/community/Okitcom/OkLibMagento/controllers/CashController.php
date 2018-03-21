@@ -124,7 +124,6 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
         $checkout->load($transaction, "external_id");
         if ($checkout == null) {
             return $this->redirectWithError($this->__('Your OK transaction was not found.'));
-
         }
 
         /** @var \OK\Service\Cash $okCashClient */

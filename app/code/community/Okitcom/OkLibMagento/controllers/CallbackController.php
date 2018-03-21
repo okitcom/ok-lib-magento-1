@@ -19,21 +19,62 @@ class Okitcom_OkLibMagento_CallbackController extends Mage_Core_Controller_Front
         }
 
         try {
-            $success = $this->verifySignature();
+            $this->verifySignature();
         } catch (Okitcom_OkLibMagento_Helper_Callback_Exception $exception) {
             Mage::logException($exception);
-            Mage::log("Invalid signature for OK Cash callback.", null, Okitcom_OkLibMagento_Helper_Config::LOGFILE);
+            $this->log("Invalid signature for OK Cash callback.");
 
-            $this->getResponse()->setHeader('HTTP/1.1','400 Bad Request');
-            $this->getResponse()->setBody(
-                "Invalid signature"
-            );
+            $this->respondNotOK("Invalid signature");
             return;
         }
 
-        $this->getResponse()->setBody("Success");
+        $guid = $this->getRequest()->getPost("guid");
+        $state = $this->getRequest()->getPost("state");
 
+        $checkout = Mage::getModel('oklibmagento/checkout')->load($guid, "guid");
+        if ($checkout->getId() == null) {
+            $this->respondNotOK("Transaction not found");
+            return;
+        }
 
+        /** @var \OK\Service\Cash $okCash */
+        $okCash = Mage::helper('oklibmagento/oklib')->getCashClient();
+        try {
+            $okResponse = $okCash->get($guid);
+            if ($okResponse != null) {
+
+                $checkout->setState($okResponse->state);
+                $checkout->save();
+
+                if ($okResponse->state == Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_SUCCESS) {
+                    Mage::helper('oklibmagento/checkout')->createOrder($checkout, $okResponse);
+                }
+
+                $this->respondOK("Transaction processed");
+            } else {
+                $this->respondNotOK("Could not get transaction state");
+            }
+
+        } catch (\Exception $e) {
+            Mage::logException($e);
+            $this->log("Could not update OK transaction with id " . $checkout->getId() . ". Message: " . $e->getMessage());
+            $this->respondNotOK("Could not create order");
+            return;
+        }
+
+    }
+
+    private function respondOK($message) {
+        $this->getResponse()->setBody(
+            $message
+        );
+    }
+
+    private function respondNotOK($message) {
+        $this->getResponse()->setHeader('HTTP/1.1','400 Bad Request');
+        $this->getResponse()->setBody(
+            $message
+        );
     }
 
     /**
@@ -95,5 +136,10 @@ class Okitcom_OkLibMagento_CallbackController extends Mage_Core_Controller_Front
 //        var_dump($content);
 //        var_dump($data);
     }
+
+    private function log($message) {
+        Mage::log($message, null, Okitcom_OkLibMagento_Helper_Config::LOGFILE);
+    }
+
 
 }
