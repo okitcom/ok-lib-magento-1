@@ -50,11 +50,6 @@ class Transaction extends JSONObject
     public $reference;
 
     /**
-     * @var string merchant reference
-     */
-    public $purchaseId;
-
-    /**
      * @var string Location of the purchase
      */
     public $location;
@@ -83,6 +78,11 @@ class Transaction extends JSONObject
      * @var string Type identifier of the POS. For example: ONLINE, INSTORE
      */
     public $checkoutType;
+
+    /**
+     * @var string Unique merchant reference of the purchase, displayed to the consumer
+     */
+    public $purchaseId;
 
     /**
      * @var string Space seperated list of applicable campaign

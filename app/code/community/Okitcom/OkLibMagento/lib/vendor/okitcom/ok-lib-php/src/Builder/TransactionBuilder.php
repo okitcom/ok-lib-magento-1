@@ -37,6 +37,7 @@ use OK\Model\Location;
  * @method TransactionBuilder setAttributes(Attributes $attributes)
  * @method TransactionBuilder setRedirectUrl(string $redirectUrl)
  * @method TransactionBuilder setPermissions(string $permissions)
+ * @method TransactionBuilder setPurchaseId(string $purchaseId)
  *
  * @method Transaction build()
  */

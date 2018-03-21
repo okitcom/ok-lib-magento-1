@@ -46,6 +46,9 @@ class CashTest extends ServiceTest
         $this->assertEquals("OK", $result->authorisationResult->result);
     }
 
+    /**
+     * @throws \OK\Model\Network\Exception\NetworkException
+     */
     public function testInitiate() {
         $request = (new TransactionBuilder())
             ->setAmount(Amount::fromCents(1000))
@@ -57,6 +60,9 @@ class CashTest extends ServiceTest
         $this->assertEquals("NewPendingTrigger", $res->state);
     }
 
+    /**
+     * @throws \OK\Model\Network\Exception\NetworkException
+     */
     public function testQR() {
         $request = (new TransactionBuilder())
             ->setAmount(Amount::fromCents(1000))
@@ -69,6 +75,9 @@ class CashTest extends ServiceTest
         $this->assertNotNull($qr);
     }
 
+    /**
+     * @throws \OK\Model\Network\Exception\NetworkException
+     */
     public function testCancel() {
         $request = (new TransactionBuilder())
             ->setAmount(Amount::fromCents(1000))
@@ -80,6 +89,9 @@ class CashTest extends ServiceTest
         $this->assertTrue($canceled->success());
     }
 
+    /**
+     * @throws \OK\Model\Network\Exception\NetworkException
+     */
     public function testCancelByReference() {
         $request = (new TransactionBuilder())
             ->setAmount(Amount::fromCents(1000))
@@ -91,6 +103,9 @@ class CashTest extends ServiceTest
         $this->assertTrue($canceled->success());
     }
 
+    /**
+     * @throws \OK\Model\Network\Exception\NetworkException
+     */
     public function testGetByReference() {
         $request = (new TransactionBuilder())
             ->setAmount(Amount::fromCents(1000))
@@ -102,6 +117,9 @@ class CashTest extends ServiceTest
         $this->assertEquals($response->guid, $txs->guid);
     }
 
+    /**
+     * @throws \OK\Model\Network\Exception\NetworkException
+     */
     public function testGetLineItemsOne() {
         $request = (new TransactionBuilder())
             ->setAmount(Amount::fromCents(1000))
@@ -122,6 +140,9 @@ class CashTest extends ServiceTest
         $this->assertNotNull($result->lineItems->all());
     }
 
+    /**
+     * @throws \OK\Model\Network\Exception\NetworkException
+     */
     public function testGetLineItemsTwo() {
         $request = (new TransactionBuilder())
             ->setAmount(Amount::fromCents(1500))
@@ -151,6 +172,33 @@ class CashTest extends ServiceTest
         $this->assertEquals(2, count($result->lineItems->all()));
     }
 
+    /**
+     * @throws \OK\Model\Network\Exception\NetworkException
+     */
+    public function testGetLineItemsExcludedFromCampaigns() {
+        $request = (new TransactionBuilder())
+            ->setAmount(Amount::fromCents(1000))
+            ->setReference("PHPUnit tx")
+            ->addLineItem(
+                (new LineItemBuilder())
+                    ->setAmount(Amount::fromEuro(10.00))
+                    ->setVat(0)
+                    ->setCurrency("EUR")
+                    ->setQuantity(1)
+                    ->setDescription("Beschrijving")
+                    ->setExcludeFromCampaigns(true)
+                    ->build()
+            )
+            ->build();
+
+        $result = $this->service->request($request);
+
+        $this->assertTrue($result->lineItems->all()[0]->excludedFromCampaigns);
+    }
+
+    /**
+     * @throws \OK\Model\Network\Exception\NetworkException
+     */
     public function testLineItemsDiscount() {
         $request = (new TransactionBuilder())
             ->setAmount(Amount::fromCents(1250))

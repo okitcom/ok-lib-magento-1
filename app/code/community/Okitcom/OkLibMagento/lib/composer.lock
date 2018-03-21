@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/okitcom/ok-lib-php.git",
-                "reference": "d1ccaea38f0a8de3b25380d8d0ccd9bcc1440228"
+                "reference": "77f73d65238b4a1a029075a0f5e282a1f931a1bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/okitcom/ok-lib-php/zipball/d1ccaea38f0a8de3b25380d8d0ccd9bcc1440228",
-                "reference": "d1ccaea38f0a8de3b25380d8d0ccd9bcc1440228",
+                "url": "https://api.github.com/repos/okitcom/ok-lib-php/zipball/77f73d65238b4a1a029075a0f5e282a1f931a1bb",
+                "reference": "77f73d65238b4a1a029075a0f5e282a1f931a1bb",
                 "shasum": ""
             },
             "require-dev": {
@@ -51,7 +51,7 @@
                 "oklib",
                 "php"
             ],
-            "time": "2018-03-08 17:09:15"
+            "time": "2018-03-21 10:08:11"
         }
     ],
     "packages-dev": [],

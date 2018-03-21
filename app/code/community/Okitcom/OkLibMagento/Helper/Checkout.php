@@ -157,7 +157,7 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
                     ->setAmount(Amount::fromEuro($shippingPrice))
                     ->setVat(0)
                     ->setCurrency("EUR")
-//                    -
+                    ->setExcludeFromCampaigns(true)
                     ->build()
             );
         }
