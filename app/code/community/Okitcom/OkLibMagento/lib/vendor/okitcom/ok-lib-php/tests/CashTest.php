@@ -186,7 +186,7 @@ class CashTest extends ServiceTest
                     ->setCurrency("EUR")
                     ->setQuantity(1)
                     ->setDescription("Beschrijving")
-                    ->setExcludeFromCampaigns(true)
+                    ->setExcludedFromCampaigns(true)
                     ->build()
             )
             ->build();

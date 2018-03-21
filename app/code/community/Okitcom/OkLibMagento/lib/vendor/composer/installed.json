@@ -6,18 +6,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/okitcom/ok-lib-php.git",
-            "reference": "db223b80df0cce4768015ae63179b3cdec51a6a9"
+            "reference": "e190cbd49de8e23efa2125c07e1d78cfa3cb62df"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/okitcom/ok-lib-php/zipball/db223b80df0cce4768015ae63179b3cdec51a6a9",
-            "reference": "db223b80df0cce4768015ae63179b3cdec51a6a9",
+            "url": "https://api.github.com/repos/okitcom/ok-lib-php/zipball/e190cbd49de8e23efa2125c07e1d78cfa3cb62df",
+            "reference": "e190cbd49de8e23efa2125c07e1d78cfa3cb62df",
             "shasum": ""
         },
         "require-dev": {
             "phpunit/phpunit": "5.7.x-dev"
         },
-        "time": "2018-03-21T10:14:34+00:00",
+        "time": "2018-03-21T10:21:47+00:00",
         "type": "library",
         "installation-source": "source",
         "autoload": {

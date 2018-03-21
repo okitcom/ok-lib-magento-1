@@ -22,7 +22,7 @@ use OK\Model\Cash\LineItems;
  * @method LineItemBuilder setAmount(Amount $amount)
  * @method LineItemBuilder setVat(int $vat)
  * @method LineItemBuilder setCurrency(string $currency)
- * @method LineItemBuilder setExcludeFromCampaigns(bool $excluded)
+ * @method LineItemBuilder setExcludedFromCampaigns(bool $excluded)
  *
  * @method LineItem build()
  */
