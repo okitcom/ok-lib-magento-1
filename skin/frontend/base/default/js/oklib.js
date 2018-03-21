@@ -56,8 +56,15 @@ function showMessage(txt, type) {
     var $element = window.jQuery('ul.messages');
     if($element == null || !$element.length)
         $element = window.jQuery(html).prependTo(productPageContainer);
-    console.log($element);
     $element.append(window.jQuery(messageHtml));
+}
+
+function getOkStoreUrl(path) {
+    var storeUrl = window.okStoreInfo.store_url;
+    if (storeUrl !== 'undefined') {
+        return okStoreInfo.store_url + path;
+    }
+    return '/' . path;
 }
 
 var loadingOkRequest = false;
@@ -75,7 +82,7 @@ $(document).on('click', '#ok-checkout-button', function () {
         loadingOkRequest = true;
         window.jQuery.ajax({
             showLoader: true,
-            url: '/oklib/cash/init',
+            url: getOkStoreUrl('oklib/cash/init'),
             data: "",
             type: "GET",
             dataType: 'json'
@@ -127,7 +134,7 @@ $(document).on('click', '#ok-buynow-button', function (e) {
         loadingOkRequest = true;
         window.jQuery.ajax({
             showLoader: true,
-            url: '/oklib/cash/buynow',
+            url: getOkStoreUrl('oklib/cash/buynow'),
             data: lastSelectedOptions,
             type: "GET",
             dataType: 'json'
@@ -161,7 +168,7 @@ $(document).on('click', '#ok-open-button', function () {
         loadingOkRequest = true;
         window.jQuery.ajax({
             showLoader: true,
-            url: '/oklib/open/init',
+            url: getOkStoreUrl('oklib/open/init'),
             data: "",
             type: "GET",
             dataType: 'json'

@@ -1,0 +1,9 @@
+<?php
+$h = Mage::helper('core');
+$info = new stdClass();
+$info->store_url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK);
+
+?>
+<script type="text/javascript">
+    var okStoreInfo = <?php echo $h->jsonEncode($info); ?>;
+</script>

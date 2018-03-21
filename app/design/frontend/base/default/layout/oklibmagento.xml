@@ -16,6 +16,11 @@
                     </text>
                 </action>
             </block>
+            <block type="core/template" name="oklib.storeurl.block">
+                <action method="setTemplate">
+                    <template>oklibmagento/storeurl_js.phtml</template>
+                </action>
+            </block>
         </reference>
     </default>
     <checkout_cart_index>
