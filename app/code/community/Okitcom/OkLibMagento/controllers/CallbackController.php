@@ -19,7 +19,7 @@ class Okitcom_OkLibMagento_CallbackController extends Mage_Core_Controller_Front
         }
 
         try {
-            $this->verifySignature();
+            $success = $this->verifySignature();
         } catch (Okitcom_OkLibMagento_Helper_Callback_Exception $exception) {
             Mage::logException($exception);
             Mage::log("Invalid signature for OK Cash callback.", null, Okitcom_OkLibMagento_Helper_Config::LOGFILE);
@@ -28,7 +28,12 @@ class Okitcom_OkLibMagento_CallbackController extends Mage_Core_Controller_Front
             $this->getResponse()->setBody(
                 "Invalid signature"
             );
+            return;
         }
+
+        $this->getResponse()->setBody("Success");
+
+
     }
 
     /**
@@ -62,7 +67,7 @@ class Okitcom_OkLibMagento_CallbackController extends Mage_Core_Controller_Front
         $acceptableInterval = 60; // 1 minute
 
         if (abs(time() - $unixTimestamp) > $acceptableInterval) {
-            throw new Okitcom_OkLibMagento_Helper_Callback_Exception("Timestamp is ");
+            throw new Okitcom_OkLibMagento_Helper_Callback_Exception("Timestamp is too different.");
         }
 
         $data = $method . "\n" . $timestamp . "\n" . $fullPath;
@@ -74,7 +79,15 @@ class Okitcom_OkLibMagento_CallbackController extends Mage_Core_Controller_Front
         $cashSecret = Mage::helper('oklibmagento/oklib')->getSecretKey(Okitcom_OkLibMagento_Helper_Oklib::SERVICE_TYPE_CASH);
 
         $calculatedSignature = base64_encode(hash_hmac('sha256', $data, $cashSecret, true));
-        var_dump($calculatedSignature);
+
+        if ($calculatedSignature == null) {
+            throw new Okitcom_OkLibMagento_Helper_Callback_Exception("Calculated signature is null.");
+        }
+
+        if ($calculatedSignature !== $okSignature) {
+            throw new Okitcom_OkLibMagento_Helper_Callback_Exception("Signatures do not match");
+        }
+
 //        var_dump($okSignature);
 //        var_dump($method);
 //        var_dump($timestamp);
