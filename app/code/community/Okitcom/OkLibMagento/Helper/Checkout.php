@@ -204,9 +204,10 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
 
     private function calculateShippingPrice($quote) {
         $shippingMethod = $this->configHelper->getOkCashValue("default_shipping_method");
+        $shippingCountry = $this->configHelper->getOkCashValue("default_shipping_country");
         $shippingAddress = $quote->getShippingAddress();
         $shippingAddress->setShippingMethod($shippingMethod)
-            ->setCountryId("NL") // TODO: Create setting
+            ->setCountryId($shippingCountry)
             ->setCollectShippingRates(true)
             ->collectShippingRates();
 

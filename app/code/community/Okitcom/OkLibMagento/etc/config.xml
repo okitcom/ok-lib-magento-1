@@ -120,6 +120,7 @@
                 <environment>secure</environment>
             </general>
             <okcash>
+                <default_shipping_country>NL</default_shipping_country>
                 <cancel_after>180</cancel_after>
             </okcash>
         </okcheckout>
