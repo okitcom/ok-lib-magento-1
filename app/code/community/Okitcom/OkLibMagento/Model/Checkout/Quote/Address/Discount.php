@@ -42,7 +42,6 @@ class Okitcom_OkLibMagento_Model_Checkout_Quote_Address_Discount extends Mage_Sa
 //              However, this is not compatible with Magento installations that DO do this correctly.
 //              We are unsure what version provides the update that changed this behavior. However, our best guess
 //              is Magento versions sub 1.9.
-
                 if ($this->isVersionBelow19()) {
                     $address->setGrandTotal($address->getGrandTotal() + $discountAmount);
                     $address->setBaseGrandTotal($address->getBaseGrandTotal() + $discountAmount);

@@ -61,13 +61,13 @@ $checkoutTable = $installer->getConnection()->newTable(
     'created_at',
     Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
     null,
-    ['nullable' => false, 'default' => Varien_Db_Ddl_Table::TIMESTAMP_INIT],
+    ['nullable' => true],
     'Created At'
 )->addColumn(
     'updated_at',
     Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
     null,
-    ['nullable' => true, 'default' => Varien_Db_Ddl_Table::TIMESTAMP_INIT_UPDATE],
+    ['nullable' => false, 'default' => Varien_Db_Ddl_Table::TIMESTAMP_INIT_UPDATE],
     'Updated At'
 )->setComment(
     'OK checkout transactions table'
@@ -114,13 +114,13 @@ $authTable = $installer->getConnection()->newTable(
     'created_at',
     Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
     null,
-    ['nullable' => false, 'default' => Varien_Db_Ddl_Table::TIMESTAMP_INIT],
+    ['nullable' => true],
     'Created At'
 )->addColumn(
     'updated_at',
     Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
     null,
-    ['nullable' => true, 'default' => Varien_Db_Ddl_Table::TIMESTAMP_INIT_UPDATE],
+    ['nullable' => false, 'default' => Varien_Db_Ddl_Table::TIMESTAMP_INIT_UPDATE],
     'Updated At'
 )->setComment(
     'OK authorization request table'
