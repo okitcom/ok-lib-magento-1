@@ -4,7 +4,7 @@
   "keywords": ["ok", "okit", "php", "oklib", "ok open", "ok cash", "ok ticket", "ok api"],
   "homepage": "https://okit.com/",
   "license": "Apache-2.0",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "authors": [
     {
       "name": "Hidde Lycklama",

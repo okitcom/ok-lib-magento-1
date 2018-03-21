@@ -51,7 +51,7 @@ class LineItem extends JSONObject implements \JsonSerializable
     /**
      * @var bool Indicates if the line item is allowed to be taken into account for discounts and loyalty. Default: false
      */
-    public $excludedFromCampaigns;
+    public $excludeFromCampaigns;
 
     /**
      * LineItem creator.
