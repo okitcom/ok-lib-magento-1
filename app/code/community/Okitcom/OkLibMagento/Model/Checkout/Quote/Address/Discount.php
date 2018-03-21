@@ -37,9 +37,16 @@ class Okitcom_OkLibMagento_Model_Checkout_Quote_Address_Discount extends Mage_Sa
                 $address->addTotalAmount($this->getCode(), $discountAmount);
                 $address->addBaseTotalAmount($this->getCode(), $discountAmount);
 
-//                TODO: Version statement
-//                $address->setGrandTotal($address->getGrandTotal() + $discountAmount);
-//                $address->setBaseGrandTotal($address->getBaseGrandTotal() + $discountAmount);
+//              In Magento 1.8.0.0 at least, the grand total is incorrectly calculated when only
+//              calling the addTotalAmount methods above. We have to manually update the grand total amounts.
+//              However, this is not compatible with Magento installations that DO do this correctly.
+//              We are unsure what version provides the update that changed this behavior. However, our best guess
+//              is Magento versions sub 1.9.
+
+                if ($this->isVersionBelow19()) {
+                    $address->setGrandTotal($address->getGrandTotal() + $discountAmount);
+                    $address->setBaseGrandTotal($address->getBaseGrandTotal() + $discountAmount);
+                }
 
                 return $this;
             }
@@ -55,6 +62,14 @@ class Okitcom_OkLibMagento_Model_Checkout_Quote_Address_Discount extends Mage_Sa
 
     public function getLabel() {
         return $this->label;
+    }
+
+    private function isVersionBelow19() {
+        $info = Mage::getVersionInfo();
+        if ($info["major"] === '1' && intval($info["minor"]) < 9) {
+            return true;
+        }
+        return false;
     }
 
 }
