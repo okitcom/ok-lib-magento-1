@@ -17,10 +17,10 @@ if (!Mage::isInstalled()) {
     exit;
 }
 
-$secureUrl = str_replace("http", "https", getenv("MAGENTO_URL"));
+//$secureUrl = str_replace("http", "https", getenv("MAGENTO_URL"));
 
 $config = [
-    'web/secure/base_url' => $secureUrl,
+//    'web/secure/base_url' => $secureUrl,
     'web/secure/use_in_frontend' => '1',
     'web/secure/use_in_adminhtml' => '1',
 
