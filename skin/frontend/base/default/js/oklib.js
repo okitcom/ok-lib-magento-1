@@ -69,9 +69,9 @@ function getOkStoreUrl(path) {
 
 var loadingOkRequest = false;
 
-$(document).on('click', '#ok-checkout-button', function () {
+$(document).on('click', '#ok-checkout-button', function (e) {
+    e.preventDefault();
     if (loadingOkRequest) {
-        e.preventDefault();
         return;
     }
     const type = 'cash';
