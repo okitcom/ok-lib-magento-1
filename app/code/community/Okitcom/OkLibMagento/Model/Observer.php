@@ -24,24 +24,28 @@ class Okitcom_OkLibMagento_Model_Observer
     }
 
     public function updateStatus() {
-        if (!Mage::helper('oklibmagento/oklib')->isServiceEnabled(Okitcom_OkLibMagento_Helper_Oklib::SERVICE_TYPE_CASH)) {
-            return; // Don't run if OK Cash is disabled
-        }
         $this->log('Running OK transaction status check');
 
-        /** @var \OK\Service\Cash $okCash */
-        $okCash = Mage::helper('oklibmagento/oklib')->getCashClient();
         $transactions = Mage::helper('oklibmagento/checkout')->loadAllPending();
         $this->log("Found " . $transactions->count() . " tx to update");
         $updated = 0;
         $completed = 0;
         $canceled = 0;
         $still_pending = 0;
-        $cancelAfterMinutes = Mage::helper('oklibmagento/config')->getOkCashValue("cancel_after");
 
         /** @var Okitcom_OkLibMagento_Model_Checkout $item */
         foreach ($transactions->getItems() as $item) {
-            // Get status
+
+            $quote = Mage::getModel('sales/quote')->loadByIdWithoutStore($item->getQuoteId());
+            $store = $quote->getStore();
+            if ($quote->getId() == null || !Mage::helper('oklibmagento/oklib')->isServiceEnabled(Okitcom_OkLibMagento_Helper_Oklib::SERVICE_TYPE_CASH, $store)) {
+                $this->log("OK Cash service is disabled for this store. (checkout id: " . $item->getId() . ")");
+                return; // Don't run if OK Cash is disabled
+            }
+
+            /** @var \OK\Service\Cash $okCash */
+            $okCash = Mage::helper('oklibmagento/oklib')->getCashClient($store);
+            $cancelAfterMinutes = Mage::helper('oklibmagento/config')->getOkCashValue("cancel_after", $store);
 
             $guid = $item->getGuid();
             try {

@@ -36,26 +36,30 @@ class Okitcom_OkLibMagento_Helper_Config extends Mage_Core_Helper_Abstract
 
     const LOGFILE = "oklib.log";
 
-    public function getOkGeneralValue($key) {
-        return $this->getValue(self::OK_SECTION, self::OK_GROUP_GENERAL, $key);
+    public function getOkGeneralValue($key, $store = null) {
+        return $this->getValue(self::OK_SECTION, self::OK_GROUP_GENERAL, $key, $store);
     }
 
-    public function getOkCashValue($key) {
-        return $this->getValue(self::OK_SECTION, self::OK_GROUP_CASH, $key);
+    public function getOkCashValue($key, $store = null) {
+        return $this->getValue(self::OK_SECTION, self::OK_GROUP_CASH, $key, $store);
     }
 
-    public function getOkOpenValue($key) {
-        return $this->getValue(self::OK_SECTION, self::OK_GROUP_OPEN, $key);
+    public function getOkOpenValue($key, $store = null) {
+        return $this->getValue(self::OK_SECTION, self::OK_GROUP_OPEN, $key, $store);
     }
 
-    public function getOkValue($group, $key) {
-        return $this->getValue(self::OK_SECTION, $group, $key);
+    public function getOkValue($group, $key, $store = null) {
+        return $this->getValue(self::OK_SECTION, $group, $key, $store);
     }
 
-    public function getValue($section, $group, $key) {
+    public function getValue($section, $group, $key, $store = null) {
+        if ($store == null) {
+            // Try the default
+            $store = Mage::app()->getStore();
+        }
         return Mage::getStoreConfig(
             $section . '/' . $group . '/' . $key,
-            Mage::app()->getStore()
+            $store
         );
     }
 
