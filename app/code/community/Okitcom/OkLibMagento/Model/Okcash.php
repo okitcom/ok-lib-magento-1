@@ -116,6 +116,7 @@ class Okitcom_OkLibMagento_Model_Okcash extends Mage_Payment_Model_Method_Abstra
     private function processOkPayment(Varien_Object $payment, $amount) {
         // this is basically a formality
         $order = $payment->getOrder();
+        /** @var Okitcom_OkLibMagento_Model_Checkout $checkout */
         $checkout = Mage::getModel('oklibmagento/checkout')->load($order->getQuoteId(), "quote_id");
         if ($checkout->getState() !== Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_SUCCESS) {
             Mage::throwException(Mage::helper("core")->__("OK transaction state is invalid: " . $checkout->getState()));
@@ -123,7 +124,7 @@ class Okitcom_OkLibMagento_Model_Okcash extends Mage_Payment_Model_Method_Abstra
 
         // Match amounts
         /** @var \OK\Service\Cash $service */
-        $service = Mage::helper('oklibmagento/oklib')->getCashClient();
+        $service = Mage::helper('oklibmagento/oklib')->getCashClient($checkout->getStore());
         $okTransaction = $service->get($checkout->getGuid());
         if ($okTransaction->amount->getEuro() < $amount) {
             $data = json_encode([
@@ -158,9 +159,10 @@ class Okitcom_OkLibMagento_Model_Okcash extends Mage_Payment_Model_Method_Abstra
      */
     private function processOkRefund(Varien_Object $payment, $amount) {
         $order = $payment->getOrder();
+        /** @var Okitcom_OkLibMagento_Model_Checkout $checkout */
         $checkout = Mage::getModel('oklibmagento/checkout')->load($order->getId(), "sales_order_id");
         /** @var \OK\Service\Cash $service */
-        $service = Mage::helper('oklibmagento/oklib')->getCashClient();
+        $service = Mage::helper('oklibmagento/oklib')->getCashClient($checkout->getStore());
         try {
             $service->refund($checkout->getGuid(), \OK\Model\Amount::fromEuro($amount));
         } catch (NetworkException $exception) {

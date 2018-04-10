@@ -26,4 +26,14 @@ class Okitcom_OkLibMagento_Model_Checkout extends Mage_Core_Model_Abstract
         return $this;
     }
 
+    /**
+     * Get the Store for this checkout.
+     * @return mixed
+     */
+    public function getStore() {
+        $quote = Mage::getModel('sales/quote')->loadByIdWithoutStore($this->getQuoteId());
+        $store = $quote->getStore();
+        return $store;
+    }
+
 }

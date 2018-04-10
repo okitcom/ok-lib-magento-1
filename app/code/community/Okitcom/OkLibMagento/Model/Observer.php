@@ -36,9 +36,8 @@ class Okitcom_OkLibMagento_Model_Observer
         /** @var Okitcom_OkLibMagento_Model_Checkout $item */
         foreach ($transactions->getItems() as $item) {
 
-            $quote = Mage::getModel('sales/quote')->loadByIdWithoutStore($item->getQuoteId());
-            $store = $quote->getStore();
-            if ($quote->getId() == null || !Mage::helper('oklibmagento/oklib')->isServiceEnabled(Okitcom_OkLibMagento_Helper_Oklib::SERVICE_TYPE_CASH, $store)) {
+            $store = $item->getStore();
+            if ($store == null || !Mage::helper('oklibmagento/oklib')->isServiceEnabled(Okitcom_OkLibMagento_Helper_Oklib::SERVICE_TYPE_CASH, $store)) {
                 $this->log("OK Cash service is disabled for this store. (checkout id: " . $item->getId() . ")");
                 return; // Don't run if OK Cash is disabled
             }

@@ -19,14 +19,14 @@ class Okitcom_OkLibMagento_Model_Checkout_Quote_Address_Discount extends Mage_Sa
         }
 
         $quote = $address->getQuote();
-
+        /** @var Okitcom_OkLibMagento_Model_Checkout $checkout */
         $checkout = Mage::helper('oklibmagento/checkout')->loadByQuoteId($quote->getId());
 
         if ($checkout != null
             && $checkout->getId() != null
             && $checkout->getGuid() != null) {
             /** @var \OK\Service\Cash $okCashClient */
-            $okCashClient = Mage::helper('oklibmagento/oklib')->getCashClient();
+            $okCashClient = Mage::helper('oklibmagento/oklib')->getCashClient($checkout->getStore());
             $okresponse = $okCashClient->get($checkout->getGuid());
             if ($okresponse != null
                 && $okresponse->state == Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_SUCCESS
