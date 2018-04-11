@@ -31,6 +31,7 @@ class Okitcom_OkLibMagento_CallbackController extends Mage_Core_Controller_Front
         $guid = $this->getRequest()->getPost("guid");
         $state = $this->getRequest()->getPost("state");
 
+        /** @var Okitcom_OkLibMagento_Model_Checkout $checkout */
         $checkout = Mage::getModel('oklibmagento/checkout')->load($guid, "guid");
         if ($checkout->getId() == null) {
             $this->respondNotOK("Transaction not found");
@@ -38,7 +39,7 @@ class Okitcom_OkLibMagento_CallbackController extends Mage_Core_Controller_Front
         }
 
         /** @var \OK\Service\Cash $okCash */
-        $okCash = Mage::helper('oklibmagento/oklib')->getCashClient();
+        $okCash = Mage::helper('oklibmagento/oklib')->getCashClient($checkout->getStore());
         try {
             $okResponse = $okCash->get($guid);
             if ($okResponse != null) {
