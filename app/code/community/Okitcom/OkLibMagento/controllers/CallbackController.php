@@ -120,14 +120,24 @@ class Okitcom_OkLibMagento_CallbackController extends Mage_Core_Controller_Front
 
         $cashSecret = Mage::helper('oklibmagento/oklib')->getSecretKey(Okitcom_OkLibMagento_Helper_Oklib::SERVICE_TYPE_CASH);
 
-        $calculatedSignature = base64_encode(hash_hmac('sha256', $data, $cashSecret, true));
+        $calculatedSignature = $this->base64_url_encode(hash_hmac('sha256', $data, $cashSecret, true));
 
         if ($calculatedSignature == null) {
             throw new Okitcom_OkLibMagento_Helper_Callback_Exception("Calculated signature is null.");
         }
 
         if ($calculatedSignature !== $okSignature) {
-            throw new Okitcom_OkLibMagento_Helper_Callback_Exception("Signatures do not match");
+            $maxLength = 128;
+            $data = json_encode([
+                "okSignature" => substr($okSignature, 0, $maxLength),
+                "method" => substr($method, 0, $maxLength),
+                "timestamp" => substr($timestamp, 0, $maxLength),
+                "path" => substr($path, 0, $maxLength),
+                "queryString" => substr($queryString, 0, $maxLength),
+
+                "calculatedSignature" => $calculatedSignature,
+            ]);
+            throw new Okitcom_OkLibMagento_Helper_Callback_Exception("Signatures do not match. Data: " . $data);
         }
 
 //        var_dump($okSignature);
@@ -136,6 +146,10 @@ class Okitcom_OkLibMagento_CallbackController extends Mage_Core_Controller_Front
 //        var_dump($fullPath);
 //        var_dump($content);
 //        var_dump($data);
+    }
+
+    function base64_url_encode($input) {
+        return strtr(base64_encode($input), '+/', '-_');
     }
 
     private function log($message) {
