@@ -44,11 +44,12 @@ class Okitcom_OkLibMagento_CallbackController extends Mage_Core_Controller_Front
         try {
             $okResponse = $okCash->get($guid);
             if ($okResponse != null) {
-
+                $oldState = $checkout->getState();
                 $checkout->setState($okResponse->state);
                 $checkout->save();
 
-                if ($okResponse->state == Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_SUCCESS) {
+                if ($oldState !== $okResponse->state &&
+                    $okResponse->state == Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_SUCCESS) {
                     Mage::helper('oklibmagento/checkout')->createOrder($checkout, $okResponse);
                 }
 
