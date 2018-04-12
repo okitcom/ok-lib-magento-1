@@ -16,6 +16,7 @@ class Okitcom_OkLibMagento_CallbackController extends Mage_Core_Controller_Front
             $this->getResponse()->setBody(
                 "Page not found"
             );
+            return;
         }
 
         try {
