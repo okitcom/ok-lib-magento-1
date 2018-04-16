@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/okitcom/ok-lib-magento-1.svg?branch=master)](https://travis-ci.org/okitcom/ok-lib-magento-1)
 # OK Lib
 This is the OK Lib plugin for Magento 1.x. This module provides OK Cash and OK Open functionality.
 
