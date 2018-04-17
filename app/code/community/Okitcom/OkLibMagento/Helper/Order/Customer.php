@@ -19,7 +19,7 @@ class Okitcom_OkLibMagento_Helper_Order_Customer extends Okitcom_OkLibMagento_He
         // Attempt a search by OK token
         $customerByOkToken = $customerHelper->findByToken($transaction->token, $store->getWebsiteId());
         if ($customerByOkToken->getId() != null) {
-            $quote->assignCustomer($customerByOkToken);
+            $this->assign($customerByOkToken, $quote);
             return;
         }
 
@@ -27,7 +27,7 @@ class Okitcom_OkLibMagento_Helper_Order_Customer extends Okitcom_OkLibMagento_He
         if ($customerByEmail->getId() != null) {
             $customerByEmail->setData(Okitcom_OkLibMagento_Helper_Config::EAV_OKTOKEN, $transaction->token);
             $customerByEmail->save();
-            $quote->assignCustomer($customerByEmail);
+            $this->assign($customerByEmail, $quote);
             return;
         }
 
@@ -38,7 +38,13 @@ class Okitcom_OkLibMagento_Helper_Order_Customer extends Okitcom_OkLibMagento_He
             throw new Okitcom_OkLibMagento_Helper_Checkout_Exception("Could not create a valid customer.");
         }
 
-        $quote->assignCustomer($customer);
+        $this->assign($customer, $quote);
+    }
 
+    public function assign($customer, $quote) {
+        $quote->setCustomerFirstname($customer->getFirstname());
+        $quote->setCustomerLastname($customer->getLastname());
+        $quote->save();
+        $quote->assignCustomer($customer);
     }
 }

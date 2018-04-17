@@ -309,6 +309,8 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
             $checkout->setDiscount(-$discountOk->getCents());
             $checkout->setSalesOrderId($order->getId());
             $checkout->save();
+        } else {
+            $this->log("Tried to create order for checkout " . $checkout->getId() . " but a sales order id alreday exists.");
         }
     }
 
