@@ -151,6 +151,15 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
         if ($oldState === $okResponse->state) {
             // Race condition occurred, aka
             // the status was ClosedAndCaptured already, but no sales order was created (yet)
+            $tries = 20; // 10 seconds
+            $salesOrderId = null;
+            while ($salesOrderId == null && $tries > 0) {
+                $order = Mage::getModel('sales/order')->load($salesOrderId);
+                if ($order->getId() != null) {
+                    return $this->redirectWithSuccess($order);
+                }
+                $tries--;
+            }
             Mage::logException(new Okitcom_OkLibMagento_Helper_Checkout_Exception("A race condition occurred for checkout: " . $checkout->getId()));
             return $this->redirectWithError($this->__('An error occurred while creating your order.'));
 
