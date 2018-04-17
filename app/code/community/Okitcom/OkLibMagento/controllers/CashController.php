@@ -124,7 +124,6 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
         $checkout->load($transaction, "external_id");
         if ($checkout == null) {
             return $this->redirectWithError($this->__('Your OK transaction was not found.'));
-
         }
 
         /** @var \OK\Service\Cash $okCashClient */
@@ -137,6 +136,7 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
             return $this->redirectWithError($this->__('Your OK transaction was not found.'));
         }
 
+        $oldState = $checkout->getState();
         $checkout->setState($okResponse->state);
         $checkout->save();
 
@@ -147,6 +147,13 @@ class Okitcom_OkLibMagento_CashController extends Mage_Core_Controller_Front_Act
         }
         if ($checkout->getSalesOrderId() != null) {
             return $this->redirectWithSuccess(Mage::getModel('sales/order')->load($checkout->getSalesOrderId()));
+        }
+        if ($oldState === $okResponse->state) {
+            // Race condition occurred, aka
+            // the status was ClosedAndCaptured already, but no sales order was created (yet)
+            Mage::logException(new Okitcom_OkLibMagento_Helper_Checkout_Exception("A race condition occurred for checkout: " . $checkout->getId()));
+            return $this->redirectWithError($this->__('An error occurred while creating your order.'));
+
         }
 
         $quote = Mage::getModel('sales/quote')->load($checkout->getQuoteId());

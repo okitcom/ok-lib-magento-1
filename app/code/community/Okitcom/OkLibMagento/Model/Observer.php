@@ -56,7 +56,7 @@ class Okitcom_OkLibMagento_Model_Observer
                         $item->save();
 
                         if ($okResponse->state == Okitcom_OkLibMagento_Helper_Config::STATE_CHECKOUT_SUCCESS) {
-                            $this->createOrder($item, $okResponse);
+                            Mage::helper('oklibmagento/checkout')->createOrder($item, $okResponse);
                             $completed++;
                         }
 
@@ -97,35 +97,6 @@ class Okitcom_OkLibMagento_Model_Observer
 
         if ($still_pending > 0 || $updated > 0 || $canceled > 0) {
             $this->log("Ran update on " . $transactions->count() . " transactions. (" . $updated . " updated, " . $completed . " completed, " . $canceled . " canceled, " . $still_pending . " still pending)");
-        }
-    }
-
-    /**
-     * @param Okitcom_OkLibMagento_Model_Checkout $checkout
-     * @param $okResponse
-     * @throws Okitcom_OkLibMagento_Helper_Checkout_Exception
-     */
-    private function createOrder(Okitcom_OkLibMagento_Model_Checkout $checkout, $okResponse) {
-        // process
-        if ($checkout->getSalesOrderId() == null) {
-            // update
-            $quote = Mage::getModel('sales/quote')
-                ->loadByIdWithoutStore($checkout->getQuoteId());
-            if ($quote->getId() == null) {
-                Mage::logException(new Okitcom_OkLibMagento_Helper_Checkout_Exception("Could not find quote on OK transaction object. Checkout: " . $checkout->getId()));
-                throw new Okitcom_OkLibMagento_Helper_Checkout_Exception("Could not find quote.");
-            }
-
-            $order = Mage::helper('oklibmagento/order')->createOrder($quote, $okResponse);
-            if (!isset($order)) {
-                $this->log("Could not create order for checkout: " . $checkout->getId());
-                throw new Okitcom_OkLibMagento_Helper_Checkout_Exception("Could not create order for checkout: " . $checkout->getId());
-            }
-
-            $discountOk = $okResponse->authorisationResult->amount->sub($okResponse->amount);
-            $checkout->setDiscount(-$discountOk->getCents());
-            $checkout->setSalesOrderId($order->getId());
-            $checkout->save();
         }
     }
 

@@ -52,4 +52,23 @@
         </reference>
     </sales_order_view>
 
+    <sales_email_order_items>
+        <reference name="order_totals">
+            <block type="oklibmagento/checkout_discount" name="oklibmagento.order_totals.discount" />
+        </reference>
+    </sales_email_order_items>
+
+    <sales_order_print>
+        <reference name="order_totals">
+            <block type="oklibmagento/checkout_discount" name="oklibmagento.order_totals.discount" />
+        </reference>
+    </sales_order_print>
+
+    <sales_guest_print>
+        <reference name="order_totals">
+            <block type="oklibmagento/checkout_discount" name="oklibmagento.order_totals.discount" />
+        </reference>
+    </sales_guest_print>
+
+
 </layout>
