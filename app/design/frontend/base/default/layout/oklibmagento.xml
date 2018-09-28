@@ -3,16 +3,16 @@
     <default>
         <reference name="head">
             <action method="addCss">
-                <stylesheet>css/oklib.css</stylesheet>
+                <stylesheet>css/oklib.min.css</stylesheet>
             </action>
             <action method="addItem">
                 <type>skin_js</type>
-                <name>js/oklib.js</name>
+                <name>js/oklib.min.js</name>
             </action>
             <block type="core/text" name="oklib.js">
                 <action method="setText">
                     <text>
-                        <![CDATA[<script type="text/javascript" src="https://okit.com/js/oklib/dist/oklib.js"></script>]]>
+                        <![CDATA[<script type="text/javascript" src="https://okit.com/js/oklib/dist/oklib.min.js"></script>]]>
                     </text>
                 </action>
             </block>
