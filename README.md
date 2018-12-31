@@ -74,3 +74,15 @@ __0.1.0__ Initial release
 * Magento coupon codes can only be applied in OK transactions if they are applicable to logged in as well as not logged in customers.
 * Shipping price must be per-order, not per-item.
 * Discounts cannot be applied to shipping
+
+## Local deployment (Docker)
+
+The repo includes a docker and docker-compose file to simplify a test deployment. These files are
+ not intended for production deployment. 
+
+Magento needs a hostname that includes a '.' in order to work. For this setup to work add a entry to
+ your host file for local.magento to 127.0.0.1. After running `docker-compose up -d` Magento should
+ be running under: 
+
+* [http://local.magento:12345/](http://local.magento:12345/)
+* [http://local.magento:12345/admin](http://local.magento:12345/admin)

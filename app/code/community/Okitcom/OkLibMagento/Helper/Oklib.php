@@ -3,6 +3,7 @@
 use OK\Credentials\CashCredentials;
 use OK\Credentials\Environment\BetaEnvironment;
 use OK\Credentials\Environment\DevelopmentEnvironment;
+use OK\Credentials\Environment\LocalEnvironment;
 use OK\Credentials\Environment\ProductionEnvironment;
 use OK\Credentials\OpenCredentials;
 use OK\Service\Cash;
@@ -59,6 +60,8 @@ class Okitcom_OkLibMagento_Helper_Oklib extends Mage_Core_Helper_Abstract
                 return new DevelopmentEnvironment();
             case "beta":
                 return new BetaEnvironment();
+            case "local":
+                return new LocalEnvironment();
         }
         return null;
     }

@@ -234,7 +234,8 @@ class Okitcom_OkLibMagento_Helper_Checkout extends Mage_Core_Helper_Abstract
             "dev",
             "alpha",
             "test",
-            "beta"
+            "beta",
+            "local"
         ];
         $default = "secure";
         if (!in_array($env, $map)) {

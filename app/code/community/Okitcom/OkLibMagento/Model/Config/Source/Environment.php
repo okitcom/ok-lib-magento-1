@@ -17,6 +17,10 @@ class Okitcom_OkLibMagento_Model_Config_Source_Environment {
                 "value" => 'beta',
                 "label" => 'Beta'
             ],
+            [
+                "value" => 'local',
+                "label" => 'local'
+            ],
         ];
     }
 }

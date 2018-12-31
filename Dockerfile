@@ -2,14 +2,17 @@ FROM alexcheng/magento:1.9.3.8
 
 ENV INSTALL_DIR /var/www/html
 
-COPY . /var/www/oklib
+COPY --chown=www-data:www-data SetupConfig.php /var/www/html/
+COPY --chown=www-data:www-data app/ /var/www/html/app/
+COPY --chown=www-data:www-data skin/ /var/www/html/skin/
+
 COPY entrypoint_install.sh /sbin/entrypoint_install.sh
 RUN chmod +x /sbin/entrypoint_install.sh
-RUN apt-get install rsync -y && rsync -a /var/www/oklib/app/ /var/www/html/app/ && rsync -a /var/www/oklib/skin/ /var/www/html/skin/
+
 ENV TZ=Europe/Amsterdam
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN add-apt-repository -y ppa:certbot/certbot && apt-get update && apt-get install -y python-certbot-apache
 
 WORKDIR $INSTALL_DIR
 
-CMD ["/sbin/entrypoint_install.sh"]
+ENTRYPOINT ["/sbin/entrypoint_install.sh"]
+CMD ["/sbin/my_init"]
