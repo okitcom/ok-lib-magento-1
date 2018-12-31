@@ -1,0 +1,10 @@
+image: atlassian/pipelines-awscli
+
+pipelines:
+  default:
+    - step:
+        name: build artifact
+        caches:
+          - docker
+        script:
+          - docker build -t ok-magento-1 .
