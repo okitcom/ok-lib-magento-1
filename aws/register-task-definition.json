@@ -118,7 +118,6 @@
       ],
       "mountPoints": [
         {
-          "readOnly": null,
           "containerPath": "/var/lib/mysql/data",
           "sourceVolume": "db-data"
         }
@@ -130,18 +129,11 @@
   ],
   "volumes": [
     {
-      "name": "db-data",
-      "host": {
-        "sourcePath": null
-      },
-      "dockerVolumeConfiguration": null
+      "name": "db-data"
     }
   ],
   "placementConstraints": [],
-  "requiresCompatibilities": [],
-  "compatibilities": [
+  "requiresCompatibilities": [
     "EC2"
-  ],
-  "cpu": null,
-  "memory": null
+  ]
 }
