@@ -8,3 +8,32 @@ pipelines:
           - docker
         script:
           - docker build -t ok-magento-1 .
+  branches:
+    master:
+      - step:
+          name: build & push docker image
+          caches:
+            - docker
+          services:
+            - docker
+          script:
+            - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_LAMBDA_USER
+            - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_LAMBDA_USER
+            - echo "Building docker image"
+            - docker build -t ok-magento-1 .
+            - echo "Tag docker image"
+            - docker tag ok-magento-1:latest 914935490550.dkr.ecr.eu-west-1.amazonaws.com/ok-magento-1:latest
+            - echo "Login to ECR"
+            - $(aws ecr get-login --no-include-email --region eu-west-1)
+            - echo "Push docker image"
+            - docker push 914935490550.dkr.ecr.eu-west-1.amazonaws.com/ok-magento-1:latest
+#      - step:
+#          name: create task definition
+#          image: atlassian/pipelines-awscli
+#          script:
+#            - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_LAMBDA_USER
+#            - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_LAMBDA_USER
+#            - echo "Register new task definition"
+#            - aws ecs register-task-definition --cli-input-json file://aws/register-task-definition.json --region eu-west-1
+#            - echo "Update service"
+#            - aws ecs update-service --cluster=paylogic-beta --service=paylogic-fargate-service-1 --task-definition=paylogic-beta-task --region eu-west-1
