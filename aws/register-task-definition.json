@@ -6,7 +6,7 @@
   "containerDefinitions": [
     {
       "name": "web",
-      "image": "914935490550.dkr.ecr.eu-west-1.amazonaws.com/ok-magento-1:latest",
+      "image": "914935490550.dkr.ecr.eu-west-1.amazonaws.com/eks-poc/ok-magento-1:latest",
       "portMappings": [
         {
           "hostPort": 80,
