@@ -22,11 +22,11 @@ pipelines:
             - echo "Building docker image"
             - docker build -t ok-magento-1 .
             - echo "Tag docker image"
-            - docker tag ok-magento-1:latest 914935490550.dkr.ecr.eu-west-1.amazonaws.com/eks-poc/ok-magento-1:latest
+            - docker tag ok-magento-1:latest 914935490550.dkr.ecr.eu-west-1.amazonaws.com/ok-magento-1:latest
             - echo "Login to ECR"
             - $(aws ecr get-login --no-include-email --region eu-west-1)
             - echo "Push docker image"
-            - docker push 914935490550.dkr.ecr.eu-west-1.amazonaws.com/eks-poc/ok-magento-1:latest
+            - docker push 914935490550.dkr.ecr.eu-west-1.amazonaws.com/ok-magento-1:latest
       - step:
           name: create task definition
           image: atlassian/pipelines-awscli
