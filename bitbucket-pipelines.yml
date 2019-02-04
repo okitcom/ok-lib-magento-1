@@ -22,8 +22,8 @@ pipelines:
             - echo "Building docker image"
             - docker build -t ok-magento-1 .
             - echo "Tag docker image"
-            - docker tag ok-magento-1:latest 914935490550.dkr.ecr.eu-west-1.amazonaws.com/ok-magento-1:latest
-            - echo "Login to ECR"
-            - $(aws ecr get-login --no-include-email --region eu-west-1)
+            - docker tag ok-magento-1:latest repository.okit.io:5001/ok-magento-1:latest
+            - echo "Login to Nexue"
+            - docker login repository.okit.io:5001 -u $NEXUS_USER -u $NEXUS_PASSWORD
             - echo "Push docker image"
-            - docker push 914935490550.dkr.ecr.eu-west-1.amazonaws.com/ok-magento-1:latest
+            - docker push repository.okit.io:5001/ok-magento-1:latest
