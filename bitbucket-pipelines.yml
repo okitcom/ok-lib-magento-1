@@ -24,6 +24,6 @@ pipelines:
             - echo "Tag docker image"
             - docker tag ok-magento-1:latest repository.okit.io:5001/ok-magento-1:latest
             - echo "Login to Nexue"
-            - docker login repository.okit.io:5001 -u $NEXUS_USER -p $NEXUS_PASSWORD
+            - docker login repository.okit.io:5001 -u $NEXUS_TEST_USERNAME -p $NEXUS_TEST_PASSWORD
             - echo "Push docker image"
             - docker push repository.okit.io:5001/ok-magento-1:latest
