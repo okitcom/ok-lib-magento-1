@@ -3,6 +3,7 @@ FROM alexcheng/magento:1.9.3.8
 ENV INSTALL_DIR /var/www/html
 
 COPY --chown=www-data:www-data SetupConfig.php /var/www/html/
+COPY --chown=www-data:www-data .htaccess /var/www/html/
 COPY --chown=www-data:www-data app/ /var/www/html/app/
 COPY --chown=www-data:www-data skin/ /var/www/html/skin/
 
