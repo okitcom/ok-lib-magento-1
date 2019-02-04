@@ -18,6 +18,9 @@ if (!Mage::isInstalled()) {
 }
 
 $config = [
+    'web/secure/base_url' => getenv("MAGENTO_URL"),
+    'web/secure/use_in_frontend' => getenv("MAGENTO_USE_SECURE"),
+    'web/secure/use_in_adminhtml' => getenv("MAGENTO_USE_SECURE"),
 
     'okcheckout/general/environment' => getenv("OKENV"),
     'okcheckout/okcash/enabled' => '1',
