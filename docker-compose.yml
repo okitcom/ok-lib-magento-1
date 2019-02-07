@@ -16,7 +16,7 @@ services:
       MAGENTO_LOCALE: en_GB
       MAGENTO_TIMEZONE: Europe/Amsterdam
       MAGENTO_DEFAULT_CURRENCY: EUR
-      MAGENTO_URL: http://local.magento:12345
+      MAGENTO_URL: http://local.magento:12345/
       MAGENTO_USE_SECURE: 0
       MAGENTO_ADMIN_FIRSTNAME: Mage
       MAGENTO_ADMIN_LASTNAME: Admin
@@ -24,8 +24,8 @@ services:
       MAGENTO_ADMIN_USERNAME: admin
       MAGENTO_ADMIN_PASSWORD: test123
       OKENV: local
-      OKCASHSECRET: sk_89091426-47a8-4b22-bd08-0929fcafccf8
-      OKOPENSECRET: sk_e7d43768-15d3-4f76-970e-3cb88a825111
+      OKCASHSECRET: sk_7ed77876-6579-4799-8cb3-78c4529e9f6f
+      OKOPENSECRET: sk_54991545-209c-477d-b85c-ceb3f819cf1d
     volumes:
       - $PWD/docker-data/mage-logs:/var/www/html/var/log
     extra_hosts:
