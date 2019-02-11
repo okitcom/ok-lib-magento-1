@@ -44,6 +44,8 @@ pipelines:
             - chmod +x ./aws-iam-authenticator
             - mv aws-iam-authenticator bin
             - export PATH=$HOME/bin:$PATH
+            - ls -la bin
+            - echo $PATH
             - aws --region eu-west-1 eks update-kubeconfig --name eks-dev
             - echo "Updating version image"
             - kubectl -n magento-demo set image deployment.v1.apps/magento-demo-1 magento-demo-1=repository.okit.io:5001/ok-magento-1:$BITBUCKET_BUILD_NUMBER
