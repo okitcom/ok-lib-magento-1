@@ -27,3 +27,14 @@ pipelines:
             - docker login repository.okit.io:5001 -u $NEXUS_TEST_USERNAME -p $NEXUS_TEST_PASSWORD
             - echo "Push docker image"
             - docker push repository.okit.io:5001/ok-magento-1:latest
+      - step:
+          name: Update image version in deployment
+          script:
+            - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_LAMBDA_USER
+            - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_LAMBDA_USER
+            - echo "Setup kubectl"
+            - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+            - chmod +x ./kubectl
+            - aws eks update-kubeconfig --name eks-dev
+            - echo "Updating version image"
+            - ./kubectl -n magento-demo set image deployment.v1.apps/magento-demo-1 magento-demo-1=repository.okit.io:5001/ok-magento-1:latest
