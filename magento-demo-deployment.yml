@@ -97,11 +97,6 @@ spec:
             secretKeyRef:
               name: magento-demo-secrets
               key: ok_open_secret
-        - name: OKENV
-          valueFrom:
-            secretKeyRef:
-              name: magento-demo-secrets
-              key: ok_environment
         - name: MAGENTO_LOCALE
           valueFrom:
             configMapKeyRef:
@@ -127,6 +122,11 @@ spec:
             configMapKeyRef:
               name: magento-demo-config
               key: MAGENTO_USE_SECURE
+        - name: OKENV
+          valueFrom:
+            configMapKeyRef:
+              name: magento-demo-config
+              key: OKENV
         ports:
         - containerPort: 80
           name: https-secure

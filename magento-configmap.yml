@@ -8,4 +8,5 @@ data:
   MAGENTO_TIMEZONE: Europe/Amsterdam
   MAGENTO_DEFAULT_CURRENCY: EUR
   MAGENTO_URL: https://magento1.ok.app/
+  OKENV: secure
   MAGENTO_USE_SECURE: "1"
