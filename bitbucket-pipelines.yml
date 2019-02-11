@@ -35,6 +35,7 @@ pipelines:
             - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_LAMBDA_USER
             - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_LAMBDA_USER
             - echo "Setup kubectl"
+            - apk add --no-cache curl
             - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
             - chmod +x ./kubectl
             - aws eks update-kubeconfig --name eks-dev
