@@ -1,8 +1,17 @@
 var oklibpresenter = (function() {
-    var oklibCash = new OKLIBLite();
-    var oklibOpen = new OKLIBLite();
+    var oklibCash;
+    var oklibOpen;
 
     return {
+        instantiate: function() {
+            if (typeof oklibCash === 'undefined') {
+                oklibCash = new window.oklib.OKLIBLite();
+            }
+
+            if (typeof oklibOpen === 'undefined') {
+                oklibOpen = new window.oklib.OKLIBLite();
+            }
+        },
         showExisting: function (type) {
             if (type === 'cash') {
                 oklibCash.show();
@@ -22,7 +31,7 @@ var oklibpresenter = (function() {
                 oklibCash.init('t', data.guid, config, data.environment);
             } else if (type === 'open') {
                 config.loaded = oklibOpen.start;
-                oklibOpen.init('t', data.guid, config, data.environment);
+                oklibOpen.init('a', data.guid, config, data.environment);
             }
         },
         isInitialized: function (type) {
@@ -35,10 +44,10 @@ var oklibpresenter = (function() {
         reset: function (type) {
             if (type === 'cash') {
                 oklibCash.hide();
-                oklibCash = new OKLIBLite();
+                oklibCash = new window.oklib.OKLIBLite();
             } else if (type === 'open') {
                 oklibOpen.hide();
-                oklibOpen = new OKLIBLite();
+                oklibOpen = new window.oklib.OKLIBLite();
             }
         }
     };
@@ -66,11 +75,12 @@ function getOkStoreUrl(path) {
 var loadingOkRequest = false;
 
 $(document).on('click', '#ok-checkout-button', function (e) {
+    oklibpresenter.instantiate();
     e.preventDefault();
     if (loadingOkRequest) {
         return;
     }
-    const type = 'cash';
+    var type = 'cash';
     if (oklibpresenter.isInitialized(type)) {
         oklibpresenter.showExisting(type);
     } else {
@@ -102,12 +112,13 @@ $(document).on('click', '#ok-checkout-button', function (e) {
 var lastSelectedOptions = null;
 
 $(document).on('click', '#ok-buynow-button', function (e) {
+    oklibpresenter.instantiate();
     if (loadingOkRequest) {
         e.preventDefault();
         return;
     }
-    const okLibType = 'cash';
-    const addtocart_form_selector = 'product_addtocart_form';
+    var okLibType = 'cash';
+    var addtocart_form_selector = 'product_addtocart_form';
 
     var form = $(addtocart_form_selector);
     var formData = form.serialize();
@@ -152,10 +163,11 @@ $(document).on('click', '#ok-buynow-button', function (e) {
 });
 
 $(document).on('click', '#ok-open-button', function () {
+    oklibpresenter.instantiate();
     if (loadingOkRequest) {
         return;
     }
-    const type = 'open';
+    var type = 'open';
     if (oklibpresenter.isInitialized(type)) {
         oklibpresenter.showExisting(type);
     } else {
