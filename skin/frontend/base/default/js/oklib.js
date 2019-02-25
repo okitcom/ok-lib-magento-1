@@ -43,10 +43,14 @@ var oklibpresenter = (function() {
         },
         reset: function (type) {
             if (type === 'cash') {
-                oklibCash.hide();
+                if (oklibCash.isInitialized()) {
+                    oklibCash.hide();
+                }
                 oklibCash = new window.oklib.OKLIBLite();
             } else if (type === 'open') {
-                oklibOpen.hide();
+                if (oklibOpen.isInitialized()) {
+                    oklibOpen.hide();
+                }
                 oklibOpen = new window.oklib.OKLIBLite();
             }
         }
