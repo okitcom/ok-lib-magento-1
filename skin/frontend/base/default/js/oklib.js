@@ -5,11 +5,11 @@ var oklibpresenter = (function() {
     return {
         instantiate: function() {
             if (typeof oklibCash === 'undefined') {
-                oklibCash = new window.oklib.OKLIBLite();
+                oklibCash = new window.oklib.OKLIB();
             }
 
             if (typeof oklibOpen === 'undefined') {
-                oklibOpen = new window.oklib.OKLIBLite();
+                oklibOpen = new window.oklib.OKLIB();
             }
         },
         showExisting: function (type) {
@@ -46,12 +46,12 @@ var oklibpresenter = (function() {
                 if (oklibCash.isInitialized()) {
                     oklibCash.hide();
                 }
-                oklibCash = new window.oklib.OKLIBLite();
+                oklibCash = new window.oklib.OKLIB();
             } else if (type === 'open') {
                 if (oklibOpen.isInitialized()) {
                     oklibOpen.hide();
                 }
-                oklibOpen = new window.oklib.OKLIBLite();
+                oklibOpen = new window.oklib.OKLIB();
             }
         }
     };
