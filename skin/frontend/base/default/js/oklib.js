@@ -1,49 +1,58 @@
 var oklibpresenter = (function() {
-    var getLibType = function(type) {
-        switch (type) {
-            case "open":
-                return "a";
-            case "cash":
-                return "t";
-        }
-        return null;
-    };
+    var oklibCash;
+    var oklibOpen;
 
     return {
-        showExisting: function (type) {
-            /**
-             * Either cash or open
-             */
-            const current = window.okLibType;
-            if (current === type) {
-                // just show the lib
-                window.oklib.show();
-                return true;
+        instantiate: function() {
+            if (typeof oklibCash === 'undefined') {
+                oklibCash = new window.oklib.OKLIB();
             }
-            return false;
+
+            if (typeof oklibOpen === 'undefined') {
+                oklibOpen = new window.oklib.OKLIB();
+            }
+        },
+        showExisting: function (type) {
+            if (type === 'cash') {
+                oklibCash.show();
+            } else if (type === 'open') {
+                oklibOpen.show();
+            }                
         },
         showNew: function (type, data) {
-            /**
-             * Either cash or open
-             */
-            const current = window.okLibType;
-            if (typeof current !== 'undefined' && current != null) {
-                window.oklib.remove();
-            }
-            window.okLibType = type;
-            window.oklib.init(getLibType(type), data.guid, {
-                color: "dark",
+            var config = {
+                color: 'dark',
                 culture: data.culture,
-                loaded: oklib.start,
                 initiation: data.initiation
-            }, data.environment);
-        },
-        remove: function () {
-            const current = window.okLibType;
-            if (typeof current !== 'undefined') {
-                window.oklib.remove();
+            };
+
+            if (type === 'cash') {
+                config.loaded = oklibCash.start;
+                oklibCash.init('t', data.guid, config, data.environment);
+            } else if (type === 'open') {
+                config.loaded = oklibOpen.start;
+                oklibOpen.init('a', data.guid, config, data.environment);
             }
-            window.okLibType = null;
+        },
+        isInitialized: function (type) {
+            if (type === 'cash') {
+                return oklibCash.isInitialized();
+            } else if (type === 'open') {
+                return oklibOpen.isInitialized();
+            }
+        },
+        reset: function (type) {
+            if (type === 'cash') {
+                if (oklibCash.isInitialized()) {
+                    oklibCash.hide();
+                }
+                oklibCash = new window.oklib.OKLIB();
+            } else if (type === 'open') {
+                if (oklibOpen.isInitialized()) {
+                    oklibOpen.hide();
+                }
+                oklibOpen = new window.oklib.OKLIB();
+            }
         }
     };
 })();
@@ -70,13 +79,15 @@ function getOkStoreUrl(path) {
 var loadingOkRequest = false;
 
 $(document).on('click', '#ok-checkout-button', function (e) {
+    oklibpresenter.instantiate();
     e.preventDefault();
     if (loadingOkRequest) {
         return;
     }
-    const type = 'cash';
-    if (!oklibpresenter.showExisting(type)) {
-
+    var type = 'cash';
+    if (oklibpresenter.isInitialized(type)) {
+        oklibpresenter.showExisting(type);
+    } else {
         var button = window.jQuery("#ok-checkout-button");
         button.addClass("ok-button-progress");
         loadingOkRequest = true;
@@ -105,24 +116,25 @@ $(document).on('click', '#ok-checkout-button', function (e) {
 var lastSelectedOptions = null;
 
 $(document).on('click', '#ok-buynow-button', function (e) {
+    oklibpresenter.instantiate();
     if (loadingOkRequest) {
         e.preventDefault();
         return;
     }
-    const okLibType = 'cash';
-    const addtocart_form_selector = 'product_addtocart_form';
-
-    var shouldRegenerateTransaction = false;
+    var okLibType = 'cash';
+    var addtocart_form_selector = 'product_addtocart_form';
 
     var form = $(addtocart_form_selector);
     var formData = form.serialize();
     if (lastSelectedOptions != null && lastSelectedOptions !== formData) {
-        shouldRegenerateTransaction = true;
+        oklibpresenter.reset(okLibType);
     }
     lastSelectedOptions = formData;
 
-    if (shouldRegenerateTransaction || !oklibpresenter.showExisting(okLibType)) {
-
+    if (oklibpresenter.isInitialized(okLibType)) {
+        oklibpresenter.showExisting(type);
+        e.preventDefault();
+    } else {
         var magentoForm = new VarienForm(addtocart_form_selector, true);
         if(!magentoForm.validator.validate()){
             return;
@@ -151,18 +163,18 @@ $(document).on('click', '#ok-buynow-button', function (e) {
             button.removeClass("ok-button-progress");
             showMessage("An unknown error occurred.", "error");
         });
-    } else {
-        e.preventDefault();
     }
 });
 
 $(document).on('click', '#ok-open-button', function () {
+    oklibpresenter.instantiate();
     if (loadingOkRequest) {
         return;
     }
-    const type = 'open';
-    if (!oklibpresenter.showExisting(type)) {
-
+    var type = 'open';
+    if (oklibpresenter.isInitialized(type)) {
+        oklibpresenter.showExisting(type);
+    } else {
         var button = window.jQuery("#ok-open-button");
         button.addClass("ok-button-progress");
         loadingOkRequest = true;
