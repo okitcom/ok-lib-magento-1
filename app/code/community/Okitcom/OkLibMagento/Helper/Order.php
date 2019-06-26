@@ -22,7 +22,7 @@ class Okitcom_OkLibMagento_Helper_Order extends Mage_Core_Helper_Abstract
         $processors = [
             new Okitcom_OkLibMagento_Helper_Order_Customer(),
             new Okitcom_OkLibMagento_Helper_Order_Address(),
-            new Okitcom_OkLibMagento_Helper_Order_Shipping(),
+//            new Okitcom_OkLibMagento_Helper_Order_Shipping(), // This one is not needed because it's done on init of the quote
             new Okitcom_OkLibMagento_Helper_Order_Payment(),
             new Okitcom_OkLibMagento_Helper_Order_LineItem()
         ];

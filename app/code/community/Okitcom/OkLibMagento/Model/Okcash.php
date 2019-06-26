@@ -126,7 +126,7 @@ class Okitcom_OkLibMagento_Model_Okcash extends Mage_Payment_Model_Method_Abstra
         /** @var \OK\Service\Cash $service */
         $service = Mage::helper('oklibmagento/oklib')->getCashClient($checkout->getStore());
         $okTransaction = $service->get($checkout->getGuid());
-        if ($okTransaction->amount->getEuro() < $amount) {
+        if (round($okTransaction->amount->getEuro(), 2) < round(floatval($amount), 2)) {
             $data = json_encode([
                 "ok_transaction_amount" => $okTransaction->amount->getEuro(),
                 "capture_amount" => $amount
